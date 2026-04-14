@@ -671,7 +671,7 @@ with tab_ov:
         return ""
 
     st.dataframe(
-        pair_df_show.style.applymap(color_delta, subset=["Δ ($)", "Δ (%)"]),
+        pair_df_show.style.map(color_delta, subset=["Δ ($)", "Δ (%)"]),
         use_container_width=True, hide_index=True,
     )
 
@@ -804,7 +804,7 @@ with tab_calc:
 
     be_df = pd.DataFrame(be_rows)
     st.dataframe(
-        be_df.style.applymap(color_delta, subset=["Δ ($)", "Δ (%)"]),
+        be_df.style.map(color_delta, subset=["Δ ($)", "Δ (%)"]),
         use_container_width=True, hide_index=True,
     )
 
