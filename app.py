@@ -885,8 +885,18 @@ with tab_analysis:
                 pivot = sp_df.pivot_table(index="pair", columns="spread",
                                            values="pct_n", aggfunc="sum", fill_value=0)
                 pivot.columns = [f"{c:.1f}%" for c in pivot.columns]
-                st.dataframe(pivot.round(1).style.background_gradient(
-                    cmap="Blues", axis=None), use_container_width=True)
+                def color_pct(val):
+                    if not isinstance(val, (int, float)) or val == 0:
+                        return "color: #4A4F7A"
+                    intensity = min(val / 100, 1.0)
+                    r = int(30  + (123 - 30)  * intensity)
+                    g = int(16  + (47  - 16)  * intensity)
+                    b = int(48  + (247 - 48)  * intensity)
+                    return f"color: rgb({r},{g},{b}); font-weight: {'600' if val > 50 else '400'}"
+                st.dataframe(
+                    pivot.round(1).style.map(color_pct),
+                    use_container_width=True,
+                )
 
     # ── Hourly pattern ──
     with col_a2:
