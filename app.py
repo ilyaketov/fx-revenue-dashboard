@@ -616,8 +616,8 @@ with tab_ov:
             hovertemplate="%{y}: %{x:$,.0f}<extra></extra>",
         ))
         fig_tier.update_layout(**PLOTLY_LAYOUT, title="Тиры объёма (USD)",
-                               height=260, yaxis=dict(categoryorder="array", categoryarray=tiers_in_filt[::-1]),
-                               title_font=dict(size=14, color="#E8EAFF"))
+                               height=260, title_font=dict(size=14, color="#E8EAFF"))
+        fig_tier.update_yaxes(categoryorder="array", categoryarray=tiers_in_filt[::-1])
         st.plotly_chart(fig_tier, use_container_width=True)
 
     with col_s:
@@ -848,8 +848,8 @@ with tab_analysis:
         text=[[fmt_usd(v) if v > 0 else "—" for v in row] for row in hm_data],
         texttemplate="%{text}", textfont=dict(size=11, color="#E8EAFF"),
     ))
-    fig_hm.update_layout(**PLOTLY_LAYOUT, height=300,
-                          yaxis=dict(gridcolor=None, tickfont=dict(family="monospace")))
+    fig_hm.update_layout(**PLOTLY_LAYOUT, height=300)
+    fig_hm.update_yaxes(gridcolor=None, tickfont=dict(family="monospace"))
     st.plotly_chart(fig_hm, use_container_width=True)
 
     col_a1, col_a2 = st.columns(2)
