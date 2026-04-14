@@ -922,8 +922,8 @@ with tab_analysis:
                 hovertemplate="Час %{x}:00 · %{y} сделок<extra></extra>",
             ), secondary_y=True)
             fig_hr.update_layout(**PLOTLY_LAYOUT, height=280,
-                                  title_font=dict(size=14, color="#E8EAFF"),
-                                  legend=dict(x=0, y=1))
+                                  title_font=dict(size=14, color="#E8EAFF"))
+            fig_hr.update_layout(legend=dict(x=0, y=1))
             fig_hr.update_xaxes(tickmode="linear", tick0=0, dtick=3,
                                  tickformat="%d:00", gridcolor="rgba(123,47,247,0.12)")
             st.plotly_chart(fig_hr, use_container_width=True)
