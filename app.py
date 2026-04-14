@@ -12,119 +12,162 @@ from datetime import datetime
 # ─────────────────────────────────────────────
 st.set_page_config(
     page_title="FX Revenue Dashboard",
-    page_icon="📊",
+    page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
 # ─────────────────────────────────────────────
-# DESIGN SYSTEM — LIGHT FINANCIAL
+# DESIGN SYSTEM — INSTITUTIONAL FINANCIAL LIGHT
 # ─────────────────────────────────────────────
 STAPE_CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
-/* ── Root tokens ── */
+/* ─── Design tokens ─── */
 :root {
+  /* Backgrounds */
   --bg:        #F7F8FA;
   --bg2:       #FFFFFF;
-  --bg3:       #F1F3F5;
-  --bg4:       #E8EAED;
-  --green:     #16A34A;
-  --green-lt:  #22C55E;
-  --green-dk:  #166534;
-  --green-bg:  rgba(22,163,74,0.07);
-  --green-bdr: rgba(22,163,74,0.22);
-  --bdr:       #E2E6EA;
-  --bdr2:      #CDD2D8;
-  --tx:        #111827;
-  --tx2:       #4B5563;
-  --tx3:       #9CA3AF;
-  --red:       #DC2626;
-  --amber:     #D97706;
-  --blue:      #1D4ED8;
+  --bg3:       #EFF1F5;
+  --bg4:       #E4E7EE;
+  --bg5:       #D8DCE6;
+
+  /* Primary — institutional slate-blue */
+  --ink:       #0D1B2E;      /* headlines, primary text  */
+  --ink2:      #2C3E55;      /* body text                */
+  --ink3:      #5A6A80;      /* secondary labels         */
+  --ink4:      #96A3B5;      /* muted / disabled         */
+  --ink5:      #C4CAD5;      /* placeholder              */
+
+  /* Accent — single authoritative blue */
+  --blue:      #1251A3;
+  --blue-mid:  #1A65CC;
+  --blue-lt:   #2E7DE8;
+  --blue-bg:   #EBF1FB;
+  --blue-bdr:  #B8CFF0;
+
+  /* Sidebar */
+  --sb-bg:     #0E1B2E;
+  --sb-bg2:    #162438;
+  --sb-bdr:    rgba(255,255,255,0.07);
+  --sb-tx:     #A8BDD4;
+  --sb-tx2:    #6882A0;
+  --sb-tx3:    #38526E;
+
+  /* Borders */
+  --bdr:       #DDE1EA;
+  --bdr2:      #C8CDD8;
+
+  /* Semantic */
+  --green:     #0A6E45;
+  --green-mid: #0D8A57;
+  --green-bg:  #E8F5EF;
+  --green-bdr: #A8D9C2;
+  --red:       #A61C22;
+  --red-mid:   #C0222A;
+  --red-bg:    #FAEAEA;
+  --red-bdr:   #E8AEB0;
+  --amber:     #7A4A00;
+  --amber-bg:  #FDF3E0;
+  --amber-bdr: #E8C87A;
 }
 
-/* ── Global ── */
+/* ─── Global reset ─── */
 html, body, [class*="css"] {
-  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
   background: var(--bg) !important;
-  color: var(--tx) !important;
+  color: var(--ink) !important;
+  -webkit-font-smoothing: antialiased !important;
+  font-feature-settings: "tnum" on !important;
 }
 .main .block-container {
-  padding: 1.5rem 2rem 2rem;
-  max-width: 1400px;
+  padding: 0 2.5rem 3rem !important;
+  max-width: 1440px !important;
   background: var(--bg) !important;
 }
 .stApp { background: var(--bg) !important; }
+h1,h2,h3,h4,h5,h6 { color: var(--ink) !important; letter-spacing: -.01em !important; }
 
-/* ── Sidebar ── */
+/* ─── Top rule ─── */
+.main .block-container::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--blue-lt) 60%, var(--bg4) 100%);
+  margin: 0 -2.5rem 1.5rem;
+}
+
+/* ─── Sidebar ─── */
 [data-testid="stSidebar"] {
-  background: var(--bg2) !important;
-  border-right: 1px solid var(--bdr) !important;
-  box-shadow: 1px 0 4px rgba(0,0,0,0.04) !important;
+  background: var(--sb-bg) !important;
+  border-right: 1px solid var(--sb-bdr) !important;
 }
-[data-testid="stSidebar"] * { color: var(--tx) !important; }
+[data-testid="stSidebar"] * { color: var(--sb-tx) !important; }
 [data-testid="stSidebar"] .stMarkdown h3 {
-  font-size: 10px !important;
+  font-size: 9px !important;
   font-weight: 700 !important;
-  letter-spacing: .1em !important;
+  letter-spacing: .16em !important;
   text-transform: uppercase !important;
-  color: var(--tx3) !important;
-  margin: 1rem 0 .4rem !important;
+  color: var(--sb-tx3) !important;
+  margin: 1.4rem 0 .5rem !important;
+  padding-bottom: 5px !important;
+  border-bottom: 1px solid var(--sb-bdr) !important;
+}
+[data-testid="stSidebar"] [data-testid="stMultiSelect"] > div,
+[data-testid="stSidebar"] [data-testid="stSelectbox"] > div > div {
+  background: var(--sb-bg2) !important;
+  border: 1px solid var(--sb-bdr) !important;
+  border-radius: 3px !important;
+}
+[data-testid="stSidebar"] [data-baseweb="tag"] {
+  background: rgba(18,81,163,0.45) !important;
+  border-color: rgba(18,81,163,0.7) !important;
+  color: #A5C4F3 !important;
+}
+[data-testid="stSidebar"] [data-testid="stFileUploader"] {
+  border: 1px dashed var(--sb-bdr) !important;
+  background: var(--sb-bg2) !important;
+  border-radius: 4px !important;
+}
+[data-testid="stSidebar"] [data-testid="stFileUploader"]:hover {
+  border-color: rgba(46,125,232,0.5) !important;
+  background: rgba(46,125,232,0.06) !important;
+}
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] span { color: var(--sb-tx) !important; }
+[data-testid="stSidebar"] hr {
+  border-color: var(--sb-bdr) !important;
 }
 
-/* ── Multiselect / widgets ── */
-[data-testid="stMultiSelect"] > div,
-[data-testid="stSelectbox"] > div > div {
-  background: var(--bg2) !important;
-  border: 1px solid var(--bdr) !important;
-  border-radius: 6px !important;
-  color: var(--tx) !important;
-}
-.stSlider > div { color: var(--tx) !important; }
-.stSlider [data-testid="stTickBar"] { display: none; }
-[data-testid="stSlider"] [data-baseweb="slider"] div[role="slider"] {
-  background: var(--green) !important;
-  border-color: var(--green) !important;
-}
-
-/* ── File uploader ── */
-[data-testid="stFileUploader"] {
-  border: 1.5px dashed var(--green-bdr) !important;
-  background: var(--green-bg) !important;
-  border-radius: 8px !important;
-}
-[data-testid="stFileUploader"]:hover {
-  background: rgba(22,163,74,0.11) !important;
-  border-color: var(--green) !important;
-}
-
-/* ── Tabs ── */
+/* ─── Tabs ─── */
 .stTabs [data-baseweb="tab-list"] {
-  gap: 0;
+  gap: 0 !important;
   background: var(--bg2) !important;
   border-bottom: 1px solid var(--bdr) !important;
   border-radius: 0 !important;
   padding: 0 !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
 }
 .stTabs [data-baseweb="tab"] {
   background: transparent !important;
   border: none !important;
   border-bottom: 2px solid transparent !important;
+  margin-bottom: -1px !important;
   border-radius: 0 !important;
-  color: var(--tx3) !important;
-  font-size: 13px !important;
+  color: var(--ink4) !important;
+  font-size: 12px !important;
   font-weight: 500 !important;
-  padding: 12px 22px !important;
-  transition: all .15s !important;
+  letter-spacing: .03em !important;
+  text-transform: uppercase !important;
+  padding: 14px 22px !important;
+  transition: color .12s !important;
 }
-.stTabs [data-baseweb="tab"]:hover { color: var(--tx2) !important; }
+.stTabs [data-baseweb="tab"]:hover { color: var(--ink2) !important; }
 .stTabs [aria-selected="true"] {
   background: transparent !important;
-  border-bottom: 2px solid var(--green) !important;
-  color: var(--green-dk) !important;
+  border-bottom: 2px solid var(--blue) !important;
+  color: var(--blue) !important;
   font-weight: 600 !important;
 }
 .stTabs [data-baseweb="tab-panel"] {
@@ -132,144 +175,166 @@ html, body, [class*="css"] {
   padding: 1.5rem 0 !important;
 }
 
-/* ── Buttons ── */
+/* ─── Buttons ─── */
 .stButton > button {
-  background: var(--green) !important;
-  color: #fff !important;
+  background: var(--ink) !important;
+  color: #F0F4F8 !important;
   border: none !important;
-  border-radius: 6px !important;
-  font-weight: 600 !important;
-  font-size: 13px !important;
-  padding: 8px 18px !important;
-  transition: all .15s !important;
-  letter-spacing: .01em !important;
+  border-radius: 3px !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  letter-spacing: .03em !important;
+  padding: 7px 18px !important;
+  transition: background .12s !important;
 }
-.stButton > button:hover {
-  background: var(--green-dk) !important;
-  box-shadow: 0 2px 8px rgba(22,163,74,0.3) !important;
-}
-
-/* ── Download buttons ── */
+.stButton > button:hover { background: var(--ink2) !important; }
 [data-testid="stDownloadButton"] > button {
   background: var(--bg2) !important;
-  color: var(--green) !important;
-  border: 1px solid var(--green-bdr) !important;
-  border-radius: 6px !important;
+  color: var(--blue-mid) !important;
+  border: 1px solid var(--blue-bdr) !important;
+  border-radius: 3px !important;
   font-size: 12px !important;
   font-weight: 500 !important;
 }
 [data-testid="stDownloadButton"] > button:hover {
-  background: var(--green-bg) !important;
-  border-color: var(--green) !important;
+  background: var(--blue-bg) !important;
 }
 
-/* ── Metric cards ── */
+/* ─── Metrics ─── */
 [data-testid="stMetric"] {
   background: var(--bg2) !important;
   border: 1px solid var(--bdr) !important;
-  border-radius: 8px !important;
-  padding: 16px 20px !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+  border-top: 2px solid var(--blue) !important;
+  border-radius: 2px !important;
+  padding: 18px 20px 15px !important;
 }
 [data-testid="stMetric"] > div:first-child {
-  font-size: 10px !important;
+  font-size: 9px !important;
   font-weight: 700 !important;
-  letter-spacing: .08em !important;
+  letter-spacing: .15em !important;
   text-transform: uppercase !important;
-  color: var(--tx3) !important;
+  color: var(--ink4) !important;
 }
 [data-testid="stMetric"] [data-testid="stMetricValue"] {
-  font-size: 26px !important;
-  font-weight: 700 !important;
-  color: var(--tx) !important;
-  letter-spacing: -.02em !important;
+  font-size: 30px !important;
+  font-weight: 400 !important;
+  color: var(--ink) !important;
+  letter-spacing: -.03em !important;
+  font-family: 'IBM Plex Mono', monospace !important;
 }
-[data-testid="stMetricDelta"] { font-size: 12px !important; }
+[data-testid="stMetricDelta"] { font-size: 11px !important; }
 
-/* ── DataFrames ── */
+/* ─── DataFrames ─── */
 [data-testid="stDataFrame"] {
   background: var(--bg2) !important;
   border: 1px solid var(--bdr) !important;
-  border-radius: 8px !important;
+  border-radius: 2px !important;
   overflow: hidden !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
 }
 
-/* ── Divider ── */
-hr { border-color: var(--bdr) !important; opacity: 1 !important; }
+/* ─── Divider ─── */
+hr {
+  border: none !important;
+  border-top: 1px solid var(--bdr) !important;
+  margin: .75rem 0 !important;
+}
 
-/* ── Expanders ── */
+/* ─── Expanders ─── */
 details {
   background: var(--bg2) !important;
   border: 1px solid var(--bdr) !important;
-  border-radius: 8px !important;
-  padding: 4px 12px !important;
+  border-radius: 3px !important;
+  padding: 2px 12px !important;
 }
-summary { color: var(--tx2) !important; font-size: 13px !important; }
+summary {
+  color: var(--ink3) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
 
-/* ── Info / success / warning boxes ── */
+/* ─── Alerts ─── */
 [data-testid="stInfo"] {
-  background: rgba(29,78,216,0.05) !important;
-  border: 1px solid rgba(29,78,216,0.2) !important;
-  border-radius: 6px !important;
-  color: var(--blue) !important;
+  background: var(--blue-bg) !important;
+  border: 1px solid var(--blue-bdr) !important;
+  border-left: 3px solid var(--blue) !important;
+  border-radius: 2px !important; color: var(--ink2) !important;
 }
 [data-testid="stSuccess"] {
   background: var(--green-bg) !important;
   border: 1px solid var(--green-bdr) !important;
-  border-radius: 6px !important;
-  color: var(--green-dk) !important;
+  border-left: 3px solid var(--green) !important;
+  border-radius: 2px !important; color: var(--green) !important;
 }
 [data-testid="stWarning"] {
-  background: rgba(217,119,6,0.06) !important;
-  border: 1px solid rgba(217,119,6,0.22) !important;
-  border-radius: 6px !important;
-  color: var(--amber) !important;
+  background: var(--amber-bg) !important;
+  border: 1px solid var(--amber-bdr) !important;
+  border-left: 3px solid var(--amber) !important;
+  border-radius: 2px !important; color: var(--amber) !important;
+}
+[data-testid="stError"] {
+  background: var(--red-bg) !important;
+  border: 1px solid var(--red-bdr) !important;
+  border-left: 3px solid var(--red) !important;
+  border-radius: 2px !important;
+}
+[data-testid="stSlider"] [data-baseweb="slider"] [role="slider"] {
+  background: var(--blue) !important;
 }
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 5px; height: 5px; }
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg3); }
-::-webkit-scrollbar-thumb { background: var(--bdr2); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--bg5); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink4); }
 
-/* ── Custom card ── */
+/* ─── Custom cards ─── */
 .fin-card {
   background: var(--bg2);
   border: 1px solid var(--bdr);
-  border-radius: 8px;
-  padding: 18px 20px;
+  border-radius: 2px;
+  padding: 18px 22px;
   margin-bottom: 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
-.fin-card-accent {
+.fin-card-rule {
   background: var(--bg2);
   border: 1px solid var(--bdr);
-  border-left: 3px solid var(--green);
-  border-radius: 8px;
-  padding: 16px 20px;
+  border-top: 2px solid var(--blue);
+  border-radius: 2px;
+  padding: 16px 22px;
+  margin-bottom: 1rem;
+}
+.fin-card-muted {
+  background: var(--bg3);
+  border: 1px solid var(--bdr);
+  border-radius: 2px;
+  padding: 16px 22px;
   margin-bottom: 1rem;
 }
 .fin-label {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: .09em;
+  letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--tx3);
+  color: var(--ink4);
   margin-bottom: 6px;
 }
 .fin-tag {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 3px 10px;
-  border-radius: 4px;
-  font-size: 11px;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 10px;
   font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  font-family: 'IBM Plex Mono', monospace;
 }
-.tag-rub  { background: rgba(217,119,6,0.09);  color: #92400E; border: 1px solid rgba(217,119,6,0.2); }
-.tag-norub{ background: var(--green-bg);        color: var(--green-dk); border: 1px solid var(--green-bdr); }
-.tag-live { background: var(--green-bg);        color: var(--green-dk); border: 1px solid var(--green-bdr); }
-.tag-demo { background: rgba(29,78,216,0.07);   color: #1E3A8A; border: 1px solid rgba(29,78,216,0.2); }
+.tag-rub   { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-bdr); }
+.tag-norub { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-bdr); }
+.tag-live  { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-bdr); }
+.tag-demo  { background: var(--blue-bg);  color: var(--blue);  border: 1px solid var(--blue-bdr); }
+.tag-custom{ background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-bdr); }
 </style>
 """
 st.markdown(STAPE_CSS, unsafe_allow_html=True)
@@ -279,8 +344,12 @@ st.markdown(STAPE_CSS, unsafe_allow_html=True)
 # ─────────────────────────────────────────────
 PAIRS = ["EUR/RUB", "EUR/USD", "RUB/EUR", "RUB/USD", "USD/EUR", "USD/RUB"]
 PAIR_COLORS = {
-    "EUR/RUB": "#D97706", "EUR/USD": "#1D4ED8", "RUB/EUR": "#0F766E",
-    "RUB/USD": "#7C3AED", "USD/EUR": "#B45309", "USD/RUB": "#16A34A",
+    "EUR/RUB": "#1251A3",   # Primary blue
+    "EUR/USD": "#0A6E45",   # Institutional green
+    "RUB/EUR": "#5C3D99",   # Muted violet
+    "RUB/USD": "#A04B00",   # Warm sienna
+    "USD/EUR": "#2E6B8A",   # Steel blue
+    "USD/RUB": "#0D1B2E",   # Near-black ink
 }
 TIERS = ["<$500", "$500–1K", "$1K–3K", "$3K–10K", "$10K–50K", ">$50K"]
 TIER_ORDER = {t: i for i, t in enumerate(TIERS)}
@@ -291,15 +360,41 @@ MONTHS_RU = {
 }
 
 PLOTLY_LAYOUT = dict(
-    paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(family="Inter, sans-serif", color="#4B5563", size=12),
-    margin=dict(l=10, r=10, t=36, b=10),
-    xaxis=dict(gridcolor="#E5E7EB", zerolinecolor="#E5E7EB", linecolor="#E5E7EB"),
-    yaxis=dict(gridcolor="#E5E7EB", zerolinecolor="#E5E7EB", linecolor="#E5E7EB"),
-    legend=dict(bgcolor="rgba(255,255,255,0.85)", bordercolor="#E2E6EA",
-                borderwidth=1, font=dict(size=11, color="#4B5563")),
-    hoverlabel=dict(bgcolor="#FFFFFF", bordercolor="#E2E6EA",
-                    font=dict(color="#111827", size=12)),
+    paper_bgcolor="#FFFFFF",
+    plot_bgcolor="#FFFFFF",
+    font=dict(family="'IBM Plex Sans', -apple-system, sans-serif", color="#5A6A80", size=11),
+    margin=dict(l=8, r=8, t=36, b=8),
+    xaxis=dict(
+        gridcolor="#EFF1F5",
+        gridwidth=1,
+        zerolinecolor="#DDE1EA",
+        linecolor="#DDE1EA",
+        linewidth=1,
+        tickfont=dict(size=10, color="#96A3B5"),
+    ),
+    yaxis=dict(
+        gridcolor="#EFF1F5",
+        gridwidth=1,
+        zerolinecolor="#DDE1EA",
+        linecolor="#DDE1EA",
+        linewidth=1,
+        tickfont=dict(size=10, color="#96A3B5"),
+    ),
+    legend=dict(
+        bgcolor="rgba(255,255,255,0.96)",
+        bordercolor="#DDE1EA",
+        borderwidth=1,
+        font=dict(size=11, color="#2C3E55"),
+        orientation="h",
+        yanchor="bottom", y=1.02,
+        xanchor="left", x=0,
+    ),
+    hoverlabel=dict(
+        bgcolor="#FFFFFF",
+        bordercolor="#DDE1EA",
+        font=dict(color="#0D1B2E", size=12, family="'IBM Plex Sans', sans-serif"),
+    ),
+    title_font=dict(size=13, color="#0D1B2E", family="'IBM Plex Sans', sans-serif"),
 )
 
 REQUIRED_COLS = {
@@ -389,16 +484,26 @@ def agg_sim(df: pd.DataFrame, overrides: dict, elast: float, by: list) -> pd.Dat
 with st.sidebar:
     # Logo
     st.markdown("""
-    <div style="display:flex;align-items:center;gap:10px;padding:8px 0 16px">
-      <div style="width:36px;height:36px;background:linear-gradient(135deg,#16A34A,#22C55E);
-                  border-radius:10px;display:flex;align-items:center;justify-content:center;
-                  font-size:16px;flex-shrink:0">💜</div>
-      <div>
-        <div style="font-size:14px;font-weight:700;color:#111827;letter-spacing:-.01em">FX Revenue</div>
-        <div style="font-size:10px;color:#9CA3AF;font-family:monospace">powered by Stape</div>
+    <div style="padding:16px 0 20px">
+      <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px">
+        <div style="width:30px;height:30px;background:#1251A3;border-radius:2px;
+                    display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <rect x="1" y="8" width="3" height="7" rx="0" fill="white" opacity=".7"/>
+            <rect x="6" y="4" width="3" height="11" rx="0" fill="white"/>
+            <rect x="11" y="1" width="3" height="14" rx="0" fill="white" opacity=".55"/>
+          </svg>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:#D8E6F2;
+                      letter-spacing:-.01em;line-height:1.25;
+                      font-family:'IBM Plex Sans',sans-serif">FX Revenue</div>
+          <div style="font-size:9px;color:#38526E;letter-spacing:.14em;
+                      text-transform:uppercase;font-family:monospace">Analytics · Stape</div>
+        </div>
       </div>
+      <div style="height:1px;background:rgba(255,255,255,0.07)"></div>
     </div>
-    <hr style="border-color:rgba(22,163,74,0.2);margin:0 0 12px">
     """, unsafe_allow_html=True)
 
     # ── File upload ──
@@ -473,20 +578,31 @@ with st.sidebar:
 # ─────────────────────────────────────────────
 col_h1, col_h2 = st.columns([3, 1])
 with col_h1:
-    st.markdown("""
-    <h1 style="font-size:24px;font-weight:700;letter-spacing:-.02em;margin:0;
-               color:#16A34A">
-      FX Revenue Dashboard
-    </h1>
-    <div style="font-size:13px;color:#9CA3AF;margin-top:4px;font-family:monospace">
-      Анализ и симуляция выручки · {src}
+    src_str = "данные не загружены" if df.empty else f"{len(df):,} транзакций · {df['month'].nunique()} мес."
+    st.markdown(f"""
+    <div style="padding:20px 0 4px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+                  color:#96A3B5;margin-bottom:6px;font-family:'IBM Plex Mono',monospace">
+        FX · Revenue Analytics
+      </div>
+      <h1 style="font-size:26px;font-weight:300;letter-spacing:-.03em;margin:0;
+                 color:#0D1B2E;font-family:'IBM Plex Sans',sans-serif;line-height:1.1">
+        FX Revenue <span style="font-weight:600">Dashboard</span>
+      </h1>
+      <div style="font-size:12px;color:#96A3B5;margin-top:6px;
+                  font-family:'IBM Plex Mono',monospace;letter-spacing:.02em">
+        {src_str}
+      </div>
     </div>
-    """.format(src="данные не загружены" if df.empty else f"{len(df):,} транзакций · {df['month'].nunique()} мес."),
-    unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 with col_h2:
     tag = "demo" if df.empty else "live"
     label = "Demo режим" if df.empty else "Реальные данные"
-    st.markdown(f'<div style="text-align:right;margin-top:10px"><span class="fin-tag tag-{tag}">● {label}</span></div>', unsafe_allow_html=True)
+    st.markdown(
+        f'<div style="text-align:right;padding-top:28px">'
+        f'<span class="fin-tag tag-{tag}">● {label}</span></div>',
+        unsafe_allow_html=True,
+    )
 
 st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
 
@@ -495,12 +611,13 @@ st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
 # ─────────────────────────────────────────────
 if df.empty:
     st.markdown("""
-    <div class="fin-card-accent" style="text-align:center;padding:60px 40px">
-      <div style="font-size:48px;margin-bottom:16px">📊</div>
-      <div style="font-size:20px;font-weight:600;color:#111827;margin-bottom:8px">
+    <div class="fin-card-rule" style="text-align:center;padding:64px 40px">
+      <div style="font-size:36px;margin-bottom:18px;opacity:.35">▦</div>
+      <div style="font-size:18px;font-weight:500;color:#0D1B2E;margin-bottom:8px;
+                  font-family:'IBM Plex Sans',sans-serif;letter-spacing:-.01em">
         Загрузите данные для анализа
       </div>
-      <div style="font-size:14px;color:#4B5563;max-width:500px;margin:0 auto">
+      <div style="font-size:13px;color:#5A6A80;max-width:480px;margin:0 auto;line-height:1.6">
         Импортируйте CSV или Excel файл через панель слева.<br>
         Дашборд автоматически рассчитает метрики, распределение спреда,
         динамику выручки и точки безубыточности.
@@ -593,8 +710,7 @@ with tab_ov:
             hovertemplate=f"<b>{pair}</b><br>%{{x}}: %{{y:$,.0f}}<extra></extra>",
         ))
     fig_monthly.update_layout(**PLOTLY_LAYOUT, title="Динамика выручки по месяцам",
-                               barmode="stack", height=280,
-                               title_font=dict(size=14, color="#111827"))
+                               barmode="stack", height=280)
     st.plotly_chart(fig_monthly, use_container_width=True)
 
     # ── Row 2: tiers + sources ──
@@ -611,12 +727,11 @@ with tab_ov:
             x=tier_revs, y=tiers_in_filt, orientation="h",
             marker=dict(
                 color=tier_revs,
-                colorscale=[[0, "#F0FDF4"], [0.4, "#86EFAC"], [1.0, "#16A34A"]],
+                colorscale=[[0, "#EBF1FB"], [0.45, "#6B9FE4"], [1.0, "#1251A3"]],
             ),
             hovertemplate="%{y}: %{x:$,.0f}<extra></extra>",
         ))
-        fig_tier.update_layout(**PLOTLY_LAYOUT, title="Тиры объёма (USD)",
-                               height=260, title_font=dict(size=14, color="#111827"))
+        fig_tier.update_layout(**PLOTLY_LAYOUT, title="Тиры объёма (USD)", height=260)
         fig_tier.update_yaxes(categoryorder="array", categoryarray=tiers_in_filt[::-1])
         st.plotly_chart(fig_tier, use_container_width=True)
 
@@ -627,17 +742,19 @@ with tab_ov:
 
         fig_src = make_subplots(specs=[[{"secondary_y": True}]])
         fig_src.add_trace(go.Bar(name="Выручка", x=sources, y=src_rev,
-                                  marker_color=["#16A34A", "#4A9DFF"],
+                                  marker_color=["#1251A3", "#2E6B8A"],
                                   hovertemplate="%{x}: %{y:$,.0f}<extra></extra>"), secondary_y=False)
         fig_src.add_trace(go.Scatter(name="Сделки", x=sources, y=src_n, mode="markers",
-                                      marker=dict(size=10, color=["#22C55E","#6DD5FA"]),
+                                      marker=dict(size=10, color=["#5C3D99", "#0A6E45"],
+                                                  symbol="diamond"),
                                       hovertemplate="%{x}: %{y:,} сделок<extra></extra>"), secondary_y=True)
-        fig_src.update_layout(**PLOTLY_LAYOUT, title="Источники (выручка / кол-во)",
-                               height=260, title_font=dict(size=14, color="#111827"))
-        fig_src.update_yaxes(title_text="Выручка", secondary_y=False,
-                              gridcolor="#E5E7EB", color="#4B5563")
+        fig_src.update_layout(**PLOTLY_LAYOUT, title="Источники (выручка / кол-во)", height=260)
+        fig_src.update_yaxes(title_text="Выручка $", secondary_y=False,
+                              gridcolor="#EFF1F5", color="#96A3B5",
+                              title_font=dict(size=10, color="#96A3B5"))
         fig_src.update_yaxes(title_text="Сделки", secondary_y=True,
-                              gridcolor=None, color="#4B5563")
+                              gridcolor=None, color="#96A3B5",
+                              title_font=dict(size=10, color="#96A3B5"))
         st.plotly_chart(fig_src, use_container_width=True)
 
     # ── Pair breakdown table ──
@@ -666,8 +783,9 @@ with tab_ov:
 
     def color_delta(val):
         if isinstance(val, (int, float)):
-            c = "#16A34A" if val > 0.5 else "#DC2626" if val < -0.5 else "#4B5563"
-            return f"color: {c}"
+            c = "#0A6E45" if val > 0.5 else "#A61C22" if val < -0.5 else "#96A3B5"
+            fw = "600" if abs(val) > 0.5 else "400"
+            return f"color: {c}; font-weight: {fw}; font-family: 'IBM Plex Mono', monospace"
         return ""
 
     st.dataframe(
@@ -681,15 +799,16 @@ with tab_ov:
 with tab_calc:
 
     st.markdown("""
-    <div class="fin-card-accent" style="margin-bottom:1rem">
-      <div style="font-size:13px;color:#4B5563">
-        <b style="color:#111827">Как работает симуляция:</b> изменение спреда пересчитывается как
-        <code style="background:rgba(22,163,74,0.2);padding:1px 6px;border-radius:4px">
-        new_rev = base_rev × (new_spread / real_spread) × (1 + elasticity × max(0, old − new))
+    <div class="fin-card-rule" style="margin-bottom:1rem">
+      <div style="font-size:12px;color:#5A6A80;line-height:1.6">
+        <b style="color:#0D1B2E;font-weight:600">Как работает симуляция:</b>&ensp;изменение спреда пересчитывается как&ensp;
+        <code style="background:#EBF1FB;color:#1251A3;padding:2px 7px;border-radius:2px;
+                     font-family:'IBM Plex Mono',monospace;font-size:11px">
+        rev_sim = rev_base × (sp_new / sp_real) × (1 + E × max(0, sp_old − sp_new))
         </code><br>
-        <span style="color:#9CA3AF;font-size:11px">
-        Используется реальный средний спред (μ) из данных, а не стандартный.
-        Пары с кастомными спредами отмечены ●
+        <span style="color:#96A3B5;font-size:11px">
+        Используется реальный средний спред (μ) из данных.
+        Пары с кастомными спредами отмечены <span style="color:#7A4A00">●</span>
         </span>
       </div>
     </div>
@@ -711,14 +830,14 @@ with tab_calc:
 
         with cols[idx % 3]:
             st.markdown(f"""
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-              <span style="font-family:monospace;font-size:13px;font-weight:600;
-                           color:{PAIR_COLORS.get(pair,'#888')}">{pair}</span>
-              <span style="font-size:10px;color:#9CA3AF">
-                μ={mean_sp:.3f}%{"  <span style='color:#D97706'>●кастом</span>" if has_cust else ""}
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;
+                           color:{PAIR_COLORS.get(pair,'#2C3E55')}">{pair}</span>
+              <span style="font-size:9px;color:#96A3B5;font-family:'IBM Plex Mono',monospace">
+                μ={mean_sp:.3f}%{"&nbsp;&nbsp;<span style='color:#7A4A00'>●&nbsp;кастом</span>" if has_cust else ""}
               </span>
             </div>
-            <div style="font-size:10px;color:#9CA3AF;font-family:monospace;margin-bottom:6px">
+            <div style="font-size:10px;color:#96A3B5;font-family:'IBM Plex Mono',monospace;margin-bottom:5px">
               мин {min_sp:.2f}% · макс {max_sp:.2f}% · n={len(sub):,}
             </div>
             """, unsafe_allow_html=True)
@@ -733,18 +852,18 @@ with tab_calc:
             base_p = sub["fx_revenue_usd"].sum()
             sim_p  = sim_revenue(sub, st.session_state.ov, elast)
             d_p    = sim_p - base_p
-            dc     = "#16A34A" if d_p > 0.5 else "#DC2626" if d_p < -0.5 else "#4B5563"
-            sc     = "#D97706" if new_sp < mean_sp else "#16A34A" if new_sp > mean_sp else "#4B5563"
+            dc     = "#0A6E45" if d_p > 0.5 else "#A61C22" if d_p < -0.5 else "#96A3B5"
+            sc     = "#7A4A00" if new_sp < mean_sp else "#0A6E45" if new_sp > mean_sp else "#96A3B5"
             st.markdown(f"""
             <div style="display:flex;justify-content:space-between;font-size:11px;
-                        font-family:monospace;margin-top:2px">
+                        font-family:'IBM Plex Mono',monospace;margin-top:3px">
               <span style="color:{sc};font-weight:600">{new_sp:.2f}%
                 {"↓" if new_sp < mean_sp else "↑" if new_sp > mean_sp else ""}
               </span>
-              <span style="color:#4B5563">{fmt_usd(sim_p)}</span>
-              <span style="color:{dc}">{'+' if d_p>=0 else ''}{fmt_usd(d_p)}</span>
+              <span style="color:#5A6A80">{fmt_usd(sim_p)}</span>
+              <span style="color:{dc};font-weight:500">{'+' if d_p>=0 else ''}{fmt_usd(d_p)}</span>
             </div>
-            <hr style="margin:10px 0;border-color:rgba(22,163,74,0.1)">
+            <hr style="margin:10px 0">
             """, unsafe_allow_html=True)
 
     # ── Summary bar ──
@@ -752,22 +871,32 @@ with tab_calc:
     sim_filt   = sim_revenue(filt, st.session_state.ov, elast)
     delta_filt = sim_filt - base_filt
     pct_filt   = delta_filt / base_filt * 100 if base_filt > 0 else 0
-    dc_main    = "#16A34A" if delta_filt > 0 else "#DC2626"
+    dc_main    = "#0A6E45" if delta_filt > 0 else "#A61C22"
 
     st.markdown(f"""
-    <div class="fin-card" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:20px;margin-top:1rem">
-      <div><div class="fin-label">База (реальная)</div>
-           <div style="font-size:22px;font-weight:700;font-family:monospace;color:#4B5563">{fmt_usd(base_filt)}</div></div>
-      <div><div class="fin-label">Симуляция</div>
-           <div style="font-size:22px;font-weight:700;font-family:monospace;
-           color:#16A34A;
-           ">{fmt_usd(sim_filt)}</div></div>
-      <div><div class="fin-label">Δ абсолютное</div>
-           <div style="font-size:22px;font-weight:700;font-family:monospace;color:{dc_main}">
-           {'+' if delta_filt>=0 else ''}{fmt_usd(delta_filt)}</div></div>
-      <div><div class="fin-label">Δ процентное</div>
-           <div style="font-size:22px;font-weight:700;font-family:monospace;color:{dc_main}">
-           {'+' if pct_filt>=0 else ''}{pct_filt:.1f}%</div></div>
+    <div class="fin-card" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;margin-top:1rem">
+      <div style="padding:16px 22px;border-right:1px solid #DDE1EA">
+        <div class="fin-label">База (реальная)</div>
+        <div style="font-size:24px;font-weight:400;font-family:'IBM Plex Mono',monospace;
+                    color:#2C3E55;letter-spacing:-.02em">{fmt_usd(base_filt)}</div>
+      </div>
+      <div style="padding:16px 22px;border-right:1px solid #DDE1EA;border-top:2px solid #1251A3">
+        <div class="fin-label">Симуляция</div>
+        <div style="font-size:24px;font-weight:600;font-family:'IBM Plex Mono',monospace;
+                    color:#1251A3;letter-spacing:-.02em">{fmt_usd(sim_filt)}</div>
+      </div>
+      <div style="padding:16px 22px;border-right:1px solid #DDE1EA;border-top:2px solid {dc_main}">
+        <div class="fin-label">Δ абсолютное</div>
+        <div style="font-size:24px;font-weight:600;font-family:'IBM Plex Mono',monospace;
+                    color:{dc_main};letter-spacing:-.02em">
+          {'+' if delta_filt>=0 else ''}{fmt_usd(delta_filt)}</div>
+      </div>
+      <div style="padding:16px 22px;border-top:2px solid {dc_main}">
+        <div class="fin-label">Δ процентное</div>
+        <div style="font-size:24px;font-weight:600;font-family:'IBM Plex Mono',monospace;
+                    color:{dc_main};letter-spacing:-.02em">
+          {'+' if pct_filt>=0 else ''}{pct_filt:.1f}%</div>
+      </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -814,15 +943,18 @@ with tab_calc:
         sub = filt[filt["pair"] == pair]
         b = sub["fx_revenue_usd"].sum()
         s = sim_revenue(sub, st.session_state.ov, elast)
-        fig_cmp.add_trace(go.Bar(name=f"{pair} база", x=[pair], y=[b],
-                                  marker_color="rgba(156,163,175,0.4)",
-                                  hovertemplate=f"<b>{pair} база</b>: %{{y:$,.0f}}<extra></extra>"))
-        fig_cmp.add_trace(go.Bar(name=f"{pair} симуляция", x=[pair], y=[s],
-                                  marker_color=PAIR_COLORS.get(pair, "#888"),
-                                  hovertemplate=f"<b>{pair} симуляция</b>: %{{y:$,.0f}}<extra></extra>"))
+        fig_cmp.add_trace(go.Bar(
+            name=f"{pair} база", x=[pair], y=[b],
+            marker_color="#DDE1EA", marker_line=dict(color="#C4CAD5", width=1),
+            hovertemplate=f"<b>{pair} база</b>: %{{y:$,.0f}}<extra></extra>",
+        ))
+        fig_cmp.add_trace(go.Bar(
+            name=f"{pair} симул.", x=[pair], y=[s],
+            marker_color=PAIR_COLORS.get(pair, "#1251A3"),
+            hovertemplate=f"<b>{pair} симуляция</b>: %{{y:$,.0f}}<extra></extra>",
+        ))
     fig_cmp.update_layout(**PLOTLY_LAYOUT, barmode="group",
                            title="База vs Симуляция по парам", height=280,
-                           title_font=dict(size=14, color="#111827"),
                            showlegend=False)
     st.plotly_chart(fig_cmp, use_container_width=True)
 
@@ -843,13 +975,20 @@ with tab_analysis:
 
     fig_hm = go.Figure(go.Heatmap(
         z=hm_data, x=[MONTHS_RU.get(m, m) for m in months_hm], y=pairs_hm,
-        colorscale=[[0, "#F0FDF4"], [0.3, "#DCFCE7"], [0.6, "#4ADE80"], [1.0, "#16A34A"]],
+        colorscale=[[0, "#F7F8FA"], [0.25, "#C8D9F5"], [0.65, "#4E82D0"], [1.0, "#0D2E6E"]],
         hovertemplate="<b>%{y}</b><br>%{x}: %{z:$,.0f}<extra></extra>",
         text=[[fmt_usd(v) if v > 0 else "—" for v in row] for row in hm_data],
-        texttemplate="%{text}", textfont=dict(size=11, color="#111827"),
+        texttemplate="%{text}",
+        textfont=dict(size=10, color="#0D1B2E", family="'IBM Plex Mono',monospace"),
+        colorbar=dict(
+            tickfont=dict(size=10, color="#96A3B5"),
+            outlinewidth=0,
+            thickness=12,
+        ),
     ))
     fig_hm.update_layout(**PLOTLY_LAYOUT, height=300)
-    fig_hm.update_yaxes(gridcolor=None, tickfont=dict(family="monospace"))
+    fig_hm.update_yaxes(gridcolor=None,
+                         tickfont=dict(family="'IBM Plex Mono',monospace", size=11, color="#2C3E55"))
     st.plotly_chart(fig_hm, use_container_width=True)
 
     col_a1, col_a2 = st.columns(2)
@@ -871,13 +1010,15 @@ with tab_analysis:
             sp_df = pd.DataFrame(spread_rows)
             fig_sd = px.bar(sp_df, x="pct_n", y="pair", color="spread",
                             orientation="h", barmode="stack",
-                            color_continuous_scale=["#16A34A", "#4B5563", "#D97706", "#DC2626"],
+                            color_continuous_scale=["#C4CAD5", "#6B9FE4", "#1251A3", "#0D2E6E"],
                             labels={"pct_n": "% транзакций", "pair": ""},
                             hover_data={"n": True, "rev": ":.0f"},
                             height=280)
             fig_sd.update_layout(**PLOTLY_LAYOUT,
-                                  coloraxis_colorbar=dict(tickfont=dict(size=10)),
-                                  title_font=dict(size=14, color="#111827"))
+                                  coloraxis_colorbar=dict(
+                                      tickfont=dict(size=10, color="#96A3B5"),
+                                      outlinewidth=0, thickness=10,
+                                  ))
             fig_sd.update_coloraxes(colorbar_title="Спред %")
             st.plotly_chart(fig_sd, use_container_width=True)
 
@@ -887,16 +1028,17 @@ with tab_analysis:
                 pivot.columns = [f"{c:.1f}%" for c in pivot.columns]
                 def color_pct(val):
                     if not isinstance(val, (int, float)) or val == 0:
-                        return "color: #4A4F7A"
+                        return "color: #C4CAD5"
                     intensity = min(val / 100, 1.0)
-                    r = int(30  + (123 - 30)  * intensity)
-                    g = int(16  + (47  - 16)  * intensity)
-                    b = int(48  + (247 - 48)  * intensity)
-                    return f"color: rgb({r},{g},{b}); font-weight: {'600' if val > 50 else '400'}"
-                st.dataframe(
-                    pivot.round(1).style.map(color_pct),
-                    use_container_width=True,
-                )
+                    # White → blue gradient
+                    r = int(235 - (235 - 18)  * intensity)
+                    g = int(238 - (238 - 81)  * intensity)
+                    b = int(245 - (245 - 163) * intensity)
+                    return (f"color: rgb({r},{g},{b}); "
+                            f"font-weight: {'600' if val > 50 else '400'}; "
+                            f"font-family: 'IBM Plex Mono', monospace")
+                st.dataframe(pivot.round(1).style.map(color_pct),
+                             use_container_width=True)
 
     # ── Hourly pattern ──
     with col_a2:
@@ -911,21 +1053,25 @@ with tab_analysis:
             fig_hr.add_trace(go.Scatter(
                 x=hourly["hour"], y=hourly["avg_rev"], name="Ср. выручка",
                 mode="lines+markers", fill="tozeroy",
-                line=dict(color="#16A34A", width=2),
-                fillcolor="rgba(123,47,247,0.08)",
-                marker=dict(size=4),
+                line=dict(color="#1251A3", width=2),
+                fillcolor="rgba(18,81,163,0.07)",
+                marker=dict(size=4, color="#1251A3"),
                 hovertemplate="Час %{x}:00 · %{y:$,.0f}<extra></extra>",
             ), secondary_y=False)
             fig_hr.add_trace(go.Bar(
                 x=hourly["hour"], y=hourly["n"], name="Кол-во",
-                marker_color="rgba(107,114,128,0.2)",
+                marker_color="rgba(18,81,163,0.1)",
+                marker_line=dict(color="rgba(18,81,163,0.2)", width=1),
                 hovertemplate="Час %{x}:00 · %{y} сделок<extra></extra>",
             ), secondary_y=True)
-            fig_hr.update_layout(**PLOTLY_LAYOUT, height=280,
-                                  title_font=dict(size=14, color="#111827"))
+            fig_hr.update_layout(**PLOTLY_LAYOUT, height=280)
             fig_hr.update_layout(legend=dict(x=0, y=1))
             fig_hr.update_xaxes(tickmode="linear", tick0=0, dtick=3,
-                                 tickformat="%d:00", gridcolor="#E5E7EB")
+                                 gridcolor="#EFF1F5")
+            fig_hr.update_yaxes(title_text="Ср. выручка $", secondary_y=False,
+                                 title_font=dict(size=10, color="#96A3B5"))
+            fig_hr.update_yaxes(title_text="Кол-во", secondary_y=True,
+                                 title_font=dict(size=10, color="#96A3B5"))
             st.plotly_chart(fig_hr, use_container_width=True)
 
     # ── Weekday pattern ──
@@ -944,12 +1090,13 @@ with tab_analysis:
             x=weekday_agg["day_ru"], y=weekday_agg["avg_rev"],
             marker=dict(
                 color=weekday_agg["avg_rev"],
-                colorscale=[[0, "#F0FDF4"], [1.0, "#16A34A"]],
+                colorscale=[[0, "#EBF1FB"], [0.5, "#6B9FE4"], [1.0, "#1251A3"]],
+                line=dict(color="rgba(18,81,163,0.2)", width=1),
             ),
             hovertemplate="%{x}: %{y:$,.0f} средняя<extra></extra>",
         ))
-        fig_wd.update_layout(**PLOTLY_LAYOUT, height=220, title="Средняя выручка по дням",
-                              title_font=dict(size=14, color="#111827"))
+        fig_wd.update_layout(**PLOTLY_LAYOUT, height=220,
+                              title="Средняя выручка по дням недели")
         st.plotly_chart(fig_wd, use_container_width=True)
 
 # ══════════════════════════════════════════════
@@ -964,26 +1111,35 @@ with tab_export:
     # ── CSV export ──
     with exp_c1:
         st.markdown("""
-        <div class="fin-card">
-          <div style="font-size:15px;font-weight:600;margin-bottom:6px">📄 CSV</div>
-          <div style="font-size:12px;color:#4B5563">Агрегированные данные по текущему фильтру
-          с симулированной выручкой и дельтой</div>
+        <div class="fin-card-rule">
+          <div class="fin-label">CSV · Выборка</div>
+          <div style="font-size:13px;font-weight:500;color:#0D1B2E;margin-bottom:4px">
+            Агрегированные данные
+          </div>
+          <div style="font-size:12px;color:#5A6A80">
+            По текущему фильтру с симулированной выручкой и дельтой
+          </div>
         </div>
         """, unsafe_allow_html=True)
 
         agg_exp = agg_sim(filt, st.session_state.ov, elast,
                           by=["pair", "tier", "source", "month"])
         csv_buf = agg_exp.to_csv(index=False).encode("utf-8")
-        st.download_button("⬇️ Скачать CSV",  data=csv_buf,
+        st.download_button("⬇ Скачать CSV", data=csv_buf,
                            file_name="fx_revenue_filtered.csv", mime="text/csv",
                            use_container_width=True)
 
     # ── Excel export ──
     with exp_c2:
         st.markdown("""
-        <div class="fin-card">
-          <div style="font-size:15px;font-weight:600;margin-bottom:6px">📊 Excel (полный отчёт)</div>
-          <div style="font-size:12px;color:#4B5563">4 листа: Сводка · По парам · По тирам · По месяцам</div>
+        <div class="fin-card-rule">
+          <div class="fin-label">Excel · Полный отчёт</div>
+          <div style="font-size:13px;font-weight:500;color:#0D1B2E;margin-bottom:4px">
+            4 листа
+          </div>
+          <div style="font-size:12px;color:#5A6A80">
+            Сводка · По парам · По тирам · По месяцам
+          </div>
         </div>
         """, unsafe_allow_html=True)
 
