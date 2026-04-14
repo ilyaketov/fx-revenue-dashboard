@@ -11,14 +11,14 @@ from datetime import datetime
 # PAGE CONFIG
 # ─────────────────────────────────────────────
 st.set_page_config(
-    page_title="FX Revenue Dashboard · Stape",
-    page_icon="💜",
+    page_title="FX Revenue Dashboard",
+    page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
 # ─────────────────────────────────────────────
-# STAPE DESIGN SYSTEM
+# DESIGN SYSTEM — LIGHT FINANCIAL
 # ─────────────────────────────────────────────
 STAPE_CSS = """
 <style>
@@ -26,26 +26,23 @@ STAPE_CSS = """
 
 /* ── Root tokens ── */
 :root {
-  --bg:          #080818;
-  --bg2:         #0F1030;
-  --bg3:         #161840;
-  --bg4:         #1E2050;
-  --purple:      #7B2FF7;
-  --purple-lt:   #9B5FFF;
-  --blue:        #4A9DFF;
-  --blue-dk:     #2D6FCC;
-  --indigo:      #6366F1;
-  --violet:      #8B5CF6;
-  --grad:        linear-gradient(135deg, #7B2FF7 0%, #4A9DFF 100%);
-  --grad-soft:   linear-gradient(135deg, rgba(123,47,247,0.15) 0%, rgba(74,157,255,0.15) 100%);
-  --bdr:         rgba(123,47,247,0.18);
-  --bdr2:        rgba(74,157,255,0.25);
-  --tx:          #E8EAFF;
-  --tx2:         #9095C8;
-  --tx3:         #4A4F7A;
-  --green:       #10D9A0;
-  --red:         #FF5572;
-  --amber:       #FFB020;
+  --bg:        #F7F8FA;
+  --bg2:       #FFFFFF;
+  --bg3:       #F1F3F5;
+  --bg4:       #E8EAED;
+  --green:     #16A34A;
+  --green-lt:  #22C55E;
+  --green-dk:  #166534;
+  --green-bg:  rgba(22,163,74,0.07);
+  --green-bdr: rgba(22,163,74,0.22);
+  --bdr:       #E2E6EA;
+  --bdr2:      #CDD2D8;
+  --tx:        #111827;
+  --tx2:       #4B5563;
+  --tx3:       #9CA3AF;
+  --red:       #DC2626;
+  --amber:     #D97706;
+  --blue:      #1D4ED8;
 }
 
 /* ── Global ── */
@@ -65,11 +62,12 @@ html, body, [class*="css"] {
 [data-testid="stSidebar"] {
   background: var(--bg2) !important;
   border-right: 1px solid var(--bdr) !important;
+  box-shadow: 1px 0 4px rgba(0,0,0,0.04) !important;
 }
 [data-testid="stSidebar"] * { color: var(--tx) !important; }
 [data-testid="stSidebar"] .stMarkdown h3 {
-  font-size: 11px !important;
-  font-weight: 600 !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
   letter-spacing: .1em !important;
   text-transform: uppercase !important;
   color: var(--tx3) !important;
@@ -79,22 +77,27 @@ html, body, [class*="css"] {
 /* ── Multiselect / widgets ── */
 [data-testid="stMultiSelect"] > div,
 [data-testid="stSelectbox"] > div > div {
-  background: var(--bg3) !important;
+  background: var(--bg2) !important;
   border: 1px solid var(--bdr) !important;
-  border-radius: 8px !important;
+  border-radius: 6px !important;
   color: var(--tx) !important;
 }
 .stSlider > div { color: var(--tx) !important; }
 .stSlider [data-testid="stTickBar"] { display: none; }
+[data-testid="stSlider"] [data-baseweb="slider"] div[role="slider"] {
+  background: var(--green) !important;
+  border-color: var(--green) !important;
+}
 
 /* ── File uploader ── */
 [data-testid="stFileUploader"] {
-  border: 1.5px dashed var(--purple) !important;
-  background: rgba(123,47,247,0.04) !important;
-  border-radius: 12px !important;
+  border: 1.5px dashed var(--green-bdr) !important;
+  background: var(--green-bg) !important;
+  border-radius: 8px !important;
 }
 [data-testid="stFileUploader"]:hover {
-  background: rgba(123,47,247,0.08) !important;
+  background: rgba(22,163,74,0.11) !important;
+  border-color: var(--green) !important;
 }
 
 /* ── Tabs ── */
@@ -104,6 +107,7 @@ html, body, [class*="css"] {
   border-bottom: 1px solid var(--bdr) !important;
   border-radius: 0 !important;
   padding: 0 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
 }
 .stTabs [data-baseweb="tab"] {
   background: transparent !important;
@@ -113,13 +117,15 @@ html, body, [class*="css"] {
   color: var(--tx3) !important;
   font-size: 13px !important;
   font-weight: 500 !important;
-  padding: 12px 20px !important;
+  padding: 12px 22px !important;
   transition: all .15s !important;
 }
+.stTabs [data-baseweb="tab"]:hover { color: var(--tx2) !important; }
 .stTabs [aria-selected="true"] {
   background: transparent !important;
-  border-bottom: 2px solid var(--purple) !important;
-  color: var(--purple-lt) !important;
+  border-bottom: 2px solid var(--green) !important;
+  color: var(--green-dk) !important;
+  font-weight: 600 !important;
 }
 .stTabs [data-baseweb="tab-panel"] {
   background: transparent !important;
@@ -128,44 +134,47 @@ html, body, [class*="css"] {
 
 /* ── Buttons ── */
 .stButton > button {
-  background: var(--grad) !important;
+  background: var(--green) !important;
   color: #fff !important;
   border: none !important;
-  border-radius: 8px !important;
-  font-weight: 500 !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
   font-size: 13px !important;
-  padding: 8px 16px !important;
-  transition: all .2s !important;
+  padding: 8px 18px !important;
+  transition: all .15s !important;
+  letter-spacing: .01em !important;
 }
 .stButton > button:hover {
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 20px rgba(123,47,247,0.4) !important;
+  background: var(--green-dk) !important;
+  box-shadow: 0 2px 8px rgba(22,163,74,0.3) !important;
 }
 
 /* ── Download buttons ── */
 [data-testid="stDownloadButton"] > button {
-  background: var(--bg3) !important;
-  color: var(--purple-lt) !important;
-  border: 1px solid var(--bdr2) !important;
-  border-radius: 8px !important;
+  background: var(--bg2) !important;
+  color: var(--green) !important;
+  border: 1px solid var(--green-bdr) !important;
+  border-radius: 6px !important;
   font-size: 12px !important;
+  font-weight: 500 !important;
 }
 [data-testid="stDownloadButton"] > button:hover {
-  background: var(--bg4) !important;
-  border-color: var(--purple) !important;
+  background: var(--green-bg) !important;
+  border-color: var(--green) !important;
 }
 
 /* ── Metric cards ── */
 [data-testid="stMetric"] {
   background: var(--bg2) !important;
   border: 1px solid var(--bdr) !important;
-  border-radius: 12px !important;
+  border-radius: 8px !important;
   padding: 16px 20px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
 }
 [data-testid="stMetric"] > div:first-child {
-  font-size: 11px !important;
-  font-weight: 600 !important;
-  letter-spacing: .06em !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: .08em !important;
   text-transform: uppercase !important;
   color: var(--tx3) !important;
 }
@@ -173,19 +182,18 @@ html, body, [class*="css"] {
   font-size: 26px !important;
   font-weight: 700 !important;
   color: var(--tx) !important;
+  letter-spacing: -.02em !important;
 }
-[data-testid="stMetricDelta"] {
-  font-size: 12px !important;
-}
+[data-testid="stMetricDelta"] { font-size: 12px !important; }
 
 /* ── DataFrames ── */
 [data-testid="stDataFrame"] {
   background: var(--bg2) !important;
   border: 1px solid var(--bdr) !important;
-  border-radius: 10px !important;
+  border-radius: 8px !important;
   overflow: hidden !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
 }
-.dvn-scroller { background: var(--bg2) !important; }
 
 /* ── Divider ── */
 hr { border-color: var(--bdr) !important; opacity: 1 !important; }
@@ -194,81 +202,74 @@ hr { border-color: var(--bdr) !important; opacity: 1 !important; }
 details {
   background: var(--bg2) !important;
   border: 1px solid var(--bdr) !important;
-  border-radius: 10px !important;
+  border-radius: 8px !important;
   padding: 4px 12px !important;
 }
 summary { color: var(--tx2) !important; font-size: 13px !important; }
 
-/* ── Info / success boxes ── */
+/* ── Info / success / warning boxes ── */
 [data-testid="stInfo"] {
-  background: rgba(74,157,255,0.07) !important;
-  border: 1px solid rgba(74,157,255,0.25) !important;
-  border-radius: 8px !important;
+  background: rgba(29,78,216,0.05) !important;
+  border: 1px solid rgba(29,78,216,0.2) !important;
+  border-radius: 6px !important;
   color: var(--blue) !important;
 }
 [data-testid="stSuccess"] {
-  background: rgba(16,217,160,0.07) !important;
-  border: 1px solid rgba(16,217,160,0.25) !important;
-  border-radius: 8px !important;
-  color: var(--green) !important;
+  background: var(--green-bg) !important;
+  border: 1px solid var(--green-bdr) !important;
+  border-radius: 6px !important;
+  color: var(--green-dk) !important;
 }
 [data-testid="stWarning"] {
-  background: rgba(255,176,32,0.07) !important;
-  border: 1px solid rgba(255,176,32,0.25) !important;
-  border-radius: 8px !important;
+  background: rgba(217,119,6,0.06) !important;
+  border: 1px solid rgba(217,119,6,0.22) !important;
+  border-radius: 6px !important;
   color: var(--amber) !important;
 }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-track { background: var(--bg3); }
 ::-webkit-scrollbar-thumb { background: var(--bdr2); border-radius: 3px; }
 
 /* ── Custom card ── */
-.stape-card {
+.fin-card {
   background: var(--bg2);
   border: 1px solid var(--bdr);
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 18px 20px;
   margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
-.stape-card-grad {
-  background: var(--grad-soft);
-  border: 1px solid var(--bdr2);
-  border-radius: 12px;
-  padding: 18px 20px;
+.fin-card-accent {
+  background: var(--bg2);
+  border: 1px solid var(--bdr);
+  border-left: 3px solid var(--green);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 1rem;
 }
-.stape-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .08em;
+.fin-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .09em;
   text-transform: uppercase;
   color: var(--tx3);
   margin-bottom: 6px;
 }
-.stape-tag {
+.fin-tag {
   display: inline-flex;
   align-items: center;
   gap: 5px;
   padding: 3px 10px;
-  border-radius: 20px;
+  border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
 }
-.tag-rub  { background: rgba(255,176,32,0.12); color: #FFB020; border: 1px solid rgba(255,176,32,0.25); }
-.tag-norub{ background: rgba(16,217,160,0.10); color: #10D9A0; border: 1px solid rgba(16,217,160,0.25); }
-.tag-live { background: rgba(16,217,160,0.10); color: #10D9A0; border: 1px solid rgba(16,217,160,0.25); }
-.tag-demo { background: rgba(74,157,255,0.10); color: #4A9DFF; border: 1px solid rgba(74,157,255,0.25); }
-
-/* ── Pair badge ── */
-.pair-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 5px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 600;
-}
+.tag-rub  { background: rgba(217,119,6,0.09);  color: #92400E; border: 1px solid rgba(217,119,6,0.2); }
+.tag-norub{ background: var(--green-bg);        color: var(--green-dk); border: 1px solid var(--green-bdr); }
+.tag-live { background: var(--green-bg);        color: var(--green-dk); border: 1px solid var(--green-bdr); }
+.tag-demo { background: rgba(29,78,216,0.07);   color: #1E3A8A; border: 1px solid rgba(29,78,216,0.2); }
 </style>
 """
 st.markdown(STAPE_CSS, unsafe_allow_html=True)
@@ -278,8 +279,8 @@ st.markdown(STAPE_CSS, unsafe_allow_html=True)
 # ─────────────────────────────────────────────
 PAIRS = ["EUR/RUB", "EUR/USD", "RUB/EUR", "RUB/USD", "USD/EUR", "USD/RUB"]
 PAIR_COLORS = {
-    "EUR/RUB": "#FFB020", "EUR/USD": "#10D9A0", "RUB/EUR": "#4A9DFF",
-    "RUB/USD": "#6366F1", "USD/EUR": "#9B5FFF", "USD/RUB": "#7B2FF7",
+    "EUR/RUB": "#D97706", "EUR/USD": "#1D4ED8", "RUB/EUR": "#0F766E",
+    "RUB/USD": "#7C3AED", "USD/EUR": "#B45309", "USD/RUB": "#16A34A",
 }
 TIERS = ["<$500", "$500–1K", "$1K–3K", "$3K–10K", "$10K–50K", ">$50K"]
 TIER_ORDER = {t: i for i, t in enumerate(TIERS)}
@@ -291,14 +292,14 @@ MONTHS_RU = {
 
 PLOTLY_LAYOUT = dict(
     paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(family="Inter, sans-serif", color="#9095C8", size=12),
-    margin=dict(l=10, r=10, t=30, b=10),
-    xaxis=dict(gridcolor="rgba(123,47,247,0.12)", zerolinecolor="rgba(123,47,247,0.12)"),
-    yaxis=dict(gridcolor="rgba(123,47,247,0.12)", zerolinecolor="rgba(123,47,247,0.12)"),
-    legend=dict(bgcolor="rgba(0,0,0,0)", bordercolor="rgba(123,47,247,0.2)",
-                borderwidth=1, font=dict(size=11)),
-    hoverlabel=dict(bgcolor="#1E2050", bordercolor="#7B2FF7",
-                    font=dict(color="#E8EAFF", size=12)),
+    font=dict(family="Inter, sans-serif", color="#4B5563", size=12),
+    margin=dict(l=10, r=10, t=36, b=10),
+    xaxis=dict(gridcolor="#E5E7EB", zerolinecolor="#E5E7EB", linecolor="#E5E7EB"),
+    yaxis=dict(gridcolor="#E5E7EB", zerolinecolor="#E5E7EB", linecolor="#E5E7EB"),
+    legend=dict(bgcolor="rgba(255,255,255,0.85)", bordercolor="#E2E6EA",
+                borderwidth=1, font=dict(size=11, color="#4B5563")),
+    hoverlabel=dict(bgcolor="#FFFFFF", bordercolor="#E2E6EA",
+                    font=dict(color="#111827", size=12)),
 )
 
 REQUIRED_COLS = {
@@ -389,15 +390,15 @@ with st.sidebar:
     # Logo
     st.markdown("""
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 16px">
-      <div style="width:36px;height:36px;background:linear-gradient(135deg,#7B2FF7,#4A9DFF);
+      <div style="width:36px;height:36px;background:linear-gradient(135deg,#16A34A,#22C55E);
                   border-radius:10px;display:flex;align-items:center;justify-content:center;
                   font-size:16px;flex-shrink:0">💜</div>
       <div>
-        <div style="font-size:14px;font-weight:700;color:#E8EAFF;letter-spacing:-.01em">FX Revenue</div>
-        <div style="font-size:10px;color:#4A4F7A;font-family:monospace">powered by Stape</div>
+        <div style="font-size:14px;font-weight:700;color:#111827;letter-spacing:-.01em">FX Revenue</div>
+        <div style="font-size:10px;color:#9CA3AF;font-family:monospace">powered by Stape</div>
       </div>
     </div>
-    <hr style="border-color:rgba(123,47,247,0.2);margin:0 0 12px">
+    <hr style="border-color:rgba(22,163,74,0.2);margin:0 0 12px">
     """, unsafe_allow_html=True)
 
     # ── File upload ──
@@ -474,11 +475,10 @@ col_h1, col_h2 = st.columns([3, 1])
 with col_h1:
     st.markdown("""
     <h1 style="font-size:24px;font-weight:700;letter-spacing:-.02em;margin:0;
-               background:linear-gradient(135deg,#9B5FFF,#4A9DFF);
-               -webkit-background-clip:text;-webkit-text-fill-color:transparent">
+               color:#16A34A">
       FX Revenue Dashboard
     </h1>
-    <div style="font-size:13px;color:#4A4F7A;margin-top:4px;font-family:monospace">
+    <div style="font-size:13px;color:#9CA3AF;margin-top:4px;font-family:monospace">
       Анализ и симуляция выручки · {src}
     </div>
     """.format(src="данные не загружены" if df.empty else f"{len(df):,} транзакций · {df['month'].nunique()} мес."),
@@ -486,7 +486,7 @@ with col_h1:
 with col_h2:
     tag = "demo" if df.empty else "live"
     label = "Demo режим" if df.empty else "Реальные данные"
-    st.markdown(f'<div style="text-align:right;margin-top:10px"><span class="stape-tag tag-{tag}">● {label}</span></div>', unsafe_allow_html=True)
+    st.markdown(f'<div style="text-align:right;margin-top:10px"><span class="fin-tag tag-{tag}">● {label}</span></div>', unsafe_allow_html=True)
 
 st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
 
@@ -495,12 +495,12 @@ st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
 # ─────────────────────────────────────────────
 if df.empty:
     st.markdown("""
-    <div class="stape-card-grad" style="text-align:center;padding:60px 40px">
+    <div class="fin-card-accent" style="text-align:center;padding:60px 40px">
       <div style="font-size:48px;margin-bottom:16px">📊</div>
-      <div style="font-size:20px;font-weight:600;color:#E8EAFF;margin-bottom:8px">
+      <div style="font-size:20px;font-weight:600;color:#111827;margin-bottom:8px">
         Загрузите данные для анализа
       </div>
-      <div style="font-size:14px;color:#9095C8;max-width:500px;margin:0 auto">
+      <div style="font-size:14px;color:#4B5563;max-width:500px;margin:0 auto">
         Импортируйте CSV или Excel файл через панель слева.<br>
         Дашборд автоматически рассчитает метрики, распределение спреда,
         динамику выручки и точки безубыточности.
@@ -594,7 +594,7 @@ with tab_ov:
         ))
     fig_monthly.update_layout(**PLOTLY_LAYOUT, title="Динамика выручки по месяцам",
                                barmode="stack", height=280,
-                               title_font=dict(size=14, color="#E8EAFF"))
+                               title_font=dict(size=14, color="#111827"))
     st.plotly_chart(fig_monthly, use_container_width=True)
 
     # ── Row 2: tiers + sources ──
@@ -611,12 +611,12 @@ with tab_ov:
             x=tier_revs, y=tiers_in_filt, orientation="h",
             marker=dict(
                 color=tier_revs,
-                colorscale=[[0, "#1E2050"], [0.4, "#6366F1"], [1.0, "#7B2FF7"]],
+                colorscale=[[0, "#F0FDF4"], [0.4, "#86EFAC"], [1.0, "#16A34A"]],
             ),
             hovertemplate="%{y}: %{x:$,.0f}<extra></extra>",
         ))
         fig_tier.update_layout(**PLOTLY_LAYOUT, title="Тиры объёма (USD)",
-                               height=260, title_font=dict(size=14, color="#E8EAFF"))
+                               height=260, title_font=dict(size=14, color="#111827"))
         fig_tier.update_yaxes(categoryorder="array", categoryarray=tiers_in_filt[::-1])
         st.plotly_chart(fig_tier, use_container_width=True)
 
@@ -627,17 +627,17 @@ with tab_ov:
 
         fig_src = make_subplots(specs=[[{"secondary_y": True}]])
         fig_src.add_trace(go.Bar(name="Выручка", x=sources, y=src_rev,
-                                  marker_color=["#7B2FF7", "#4A9DFF"],
+                                  marker_color=["#16A34A", "#4A9DFF"],
                                   hovertemplate="%{x}: %{y:$,.0f}<extra></extra>"), secondary_y=False)
         fig_src.add_trace(go.Scatter(name="Сделки", x=sources, y=src_n, mode="markers",
-                                      marker=dict(size=10, color=["#9B5FFF","#6DD5FA"]),
+                                      marker=dict(size=10, color=["#22C55E","#6DD5FA"]),
                                       hovertemplate="%{x}: %{y:,} сделок<extra></extra>"), secondary_y=True)
         fig_src.update_layout(**PLOTLY_LAYOUT, title="Источники (выручка / кол-во)",
-                               height=260, title_font=dict(size=14, color="#E8EAFF"))
+                               height=260, title_font=dict(size=14, color="#111827"))
         fig_src.update_yaxes(title_text="Выручка", secondary_y=False,
-                              gridcolor="rgba(123,47,247,0.12)", color="#9095C8")
+                              gridcolor="#E5E7EB", color="#4B5563")
         fig_src.update_yaxes(title_text="Сделки", secondary_y=True,
-                              gridcolor=None, color="#9095C8")
+                              gridcolor=None, color="#4B5563")
         st.plotly_chart(fig_src, use_container_width=True)
 
     # ── Pair breakdown table ──
@@ -666,7 +666,7 @@ with tab_ov:
 
     def color_delta(val):
         if isinstance(val, (int, float)):
-            c = "#10D9A0" if val > 0.5 else "#FF5572" if val < -0.5 else "#9095C8"
+            c = "#16A34A" if val > 0.5 else "#DC2626" if val < -0.5 else "#4B5563"
             return f"color: {c}"
         return ""
 
@@ -681,13 +681,13 @@ with tab_ov:
 with tab_calc:
 
     st.markdown("""
-    <div class="stape-card-grad" style="margin-bottom:1rem">
-      <div style="font-size:13px;color:#9095C8">
-        <b style="color:#E8EAFF">Как работает симуляция:</b> изменение спреда пересчитывается как
-        <code style="background:rgba(123,47,247,0.2);padding:1px 6px;border-radius:4px">
+    <div class="fin-card-accent" style="margin-bottom:1rem">
+      <div style="font-size:13px;color:#4B5563">
+        <b style="color:#111827">Как работает симуляция:</b> изменение спреда пересчитывается как
+        <code style="background:rgba(22,163,74,0.2);padding:1px 6px;border-radius:4px">
         new_rev = base_rev × (new_spread / real_spread) × (1 + elasticity × max(0, old − new))
         </code><br>
-        <span style="color:#4A4F7A;font-size:11px">
+        <span style="color:#9CA3AF;font-size:11px">
         Используется реальный средний спред (μ) из данных, а не стандартный.
         Пары с кастомными спредами отмечены ●
         </span>
@@ -714,11 +714,11 @@ with tab_calc:
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
               <span style="font-family:monospace;font-size:13px;font-weight:600;
                            color:{PAIR_COLORS.get(pair,'#888')}">{pair}</span>
-              <span style="font-size:10px;color:#4A4F7A">
-                μ={mean_sp:.3f}%{"  <span style='color:#FFB020'>●кастом</span>" if has_cust else ""}
+              <span style="font-size:10px;color:#9CA3AF">
+                μ={mean_sp:.3f}%{"  <span style='color:#D97706'>●кастом</span>" if has_cust else ""}
               </span>
             </div>
-            <div style="font-size:10px;color:#4A4F7A;font-family:monospace;margin-bottom:6px">
+            <div style="font-size:10px;color:#9CA3AF;font-family:monospace;margin-bottom:6px">
               мин {min_sp:.2f}% · макс {max_sp:.2f}% · n={len(sub):,}
             </div>
             """, unsafe_allow_html=True)
@@ -733,18 +733,18 @@ with tab_calc:
             base_p = sub["fx_revenue_usd"].sum()
             sim_p  = sim_revenue(sub, st.session_state.ov, elast)
             d_p    = sim_p - base_p
-            dc     = "#10D9A0" if d_p > 0.5 else "#FF5572" if d_p < -0.5 else "#9095C8"
-            sc     = "#FFB020" if new_sp < mean_sp else "#10D9A0" if new_sp > mean_sp else "#9095C8"
+            dc     = "#16A34A" if d_p > 0.5 else "#DC2626" if d_p < -0.5 else "#4B5563"
+            sc     = "#D97706" if new_sp < mean_sp else "#16A34A" if new_sp > mean_sp else "#4B5563"
             st.markdown(f"""
             <div style="display:flex;justify-content:space-between;font-size:11px;
                         font-family:monospace;margin-top:2px">
               <span style="color:{sc};font-weight:600">{new_sp:.2f}%
                 {"↓" if new_sp < mean_sp else "↑" if new_sp > mean_sp else ""}
               </span>
-              <span style="color:#9095C8">{fmt_usd(sim_p)}</span>
+              <span style="color:#4B5563">{fmt_usd(sim_p)}</span>
               <span style="color:{dc}">{'+' if d_p>=0 else ''}{fmt_usd(d_p)}</span>
             </div>
-            <hr style="margin:10px 0;border-color:rgba(123,47,247,0.15)">
+            <hr style="margin:10px 0;border-color:rgba(22,163,74,0.1)">
             """, unsafe_allow_html=True)
 
     # ── Summary bar ──
@@ -752,20 +752,20 @@ with tab_calc:
     sim_filt   = sim_revenue(filt, st.session_state.ov, elast)
     delta_filt = sim_filt - base_filt
     pct_filt   = delta_filt / base_filt * 100 if base_filt > 0 else 0
-    dc_main    = "#10D9A0" if delta_filt > 0 else "#FF5572"
+    dc_main    = "#16A34A" if delta_filt > 0 else "#DC2626"
 
     st.markdown(f"""
-    <div class="stape-card" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:20px;margin-top:1rem">
-      <div><div class="stape-label">База (реальная)</div>
-           <div style="font-size:22px;font-weight:700;font-family:monospace;color:#9095C8">{fmt_usd(base_filt)}</div></div>
-      <div><div class="stape-label">Симуляция</div>
+    <div class="fin-card" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:20px;margin-top:1rem">
+      <div><div class="fin-label">База (реальная)</div>
+           <div style="font-size:22px;font-weight:700;font-family:monospace;color:#4B5563">{fmt_usd(base_filt)}</div></div>
+      <div><div class="fin-label">Симуляция</div>
            <div style="font-size:22px;font-weight:700;font-family:monospace;
-           background:linear-gradient(135deg,#9B5FFF,#4A9DFF);
-           -webkit-background-clip:text;-webkit-text-fill-color:transparent">{fmt_usd(sim_filt)}</div></div>
-      <div><div class="stape-label">Δ абсолютное</div>
+           color:#16A34A;
+           ">{fmt_usd(sim_filt)}</div></div>
+      <div><div class="fin-label">Δ абсолютное</div>
            <div style="font-size:22px;font-weight:700;font-family:monospace;color:{dc_main}">
            {'+' if delta_filt>=0 else ''}{fmt_usd(delta_filt)}</div></div>
-      <div><div class="stape-label">Δ процентное</div>
+      <div><div class="fin-label">Δ процентное</div>
            <div style="font-size:22px;font-weight:700;font-family:monospace;color:{dc_main}">
            {'+' if pct_filt>=0 else ''}{pct_filt:.1f}%</div></div>
     </div>
@@ -815,14 +815,14 @@ with tab_calc:
         b = sub["fx_revenue_usd"].sum()
         s = sim_revenue(sub, st.session_state.ov, elast)
         fig_cmp.add_trace(go.Bar(name=f"{pair} база", x=[pair], y=[b],
-                                  marker_color="rgba(99,102,241,0.35)",
+                                  marker_color="rgba(156,163,175,0.4)",
                                   hovertemplate=f"<b>{pair} база</b>: %{{y:$,.0f}}<extra></extra>"))
         fig_cmp.add_trace(go.Bar(name=f"{pair} симуляция", x=[pair], y=[s],
                                   marker_color=PAIR_COLORS.get(pair, "#888"),
                                   hovertemplate=f"<b>{pair} симуляция</b>: %{{y:$,.0f}}<extra></extra>"))
     fig_cmp.update_layout(**PLOTLY_LAYOUT, barmode="group",
                            title="База vs Симуляция по парам", height=280,
-                           title_font=dict(size=14, color="#E8EAFF"),
+                           title_font=dict(size=14, color="#111827"),
                            showlegend=False)
     st.plotly_chart(fig_cmp, use_container_width=True)
 
@@ -843,10 +843,10 @@ with tab_analysis:
 
     fig_hm = go.Figure(go.Heatmap(
         z=hm_data, x=[MONTHS_RU.get(m, m) for m in months_hm], y=pairs_hm,
-        colorscale=[[0, "#0F1030"], [0.3, "#1E1B5E"], [0.6, "#6366F1"], [1.0, "#7B2FF7"]],
+        colorscale=[[0, "#F0FDF4"], [0.3, "#DCFCE7"], [0.6, "#4ADE80"], [1.0, "#16A34A"]],
         hovertemplate="<b>%{y}</b><br>%{x}: %{z:$,.0f}<extra></extra>",
         text=[[fmt_usd(v) if v > 0 else "—" for v in row] for row in hm_data],
-        texttemplate="%{text}", textfont=dict(size=11, color="#E8EAFF"),
+        texttemplate="%{text}", textfont=dict(size=11, color="#111827"),
     ))
     fig_hm.update_layout(**PLOTLY_LAYOUT, height=300)
     fig_hm.update_yaxes(gridcolor=None, tickfont=dict(family="monospace"))
@@ -871,13 +871,13 @@ with tab_analysis:
             sp_df = pd.DataFrame(spread_rows)
             fig_sd = px.bar(sp_df, x="pct_n", y="pair", color="spread",
                             orientation="h", barmode="stack",
-                            color_continuous_scale=["#10D9A0", "#6366F1", "#7B2FF7", "#FF5572"],
+                            color_continuous_scale=["#16A34A", "#4B5563", "#D97706", "#DC2626"],
                             labels={"pct_n": "% транзакций", "pair": ""},
                             hover_data={"n": True, "rev": ":.0f"},
                             height=280)
             fig_sd.update_layout(**PLOTLY_LAYOUT,
                                   coloraxis_colorbar=dict(tickfont=dict(size=10)),
-                                  title_font=dict(size=14, color="#E8EAFF"))
+                                  title_font=dict(size=14, color="#111827"))
             fig_sd.update_coloraxes(colorbar_title="Спред %")
             st.plotly_chart(fig_sd, use_container_width=True)
 
@@ -911,21 +911,21 @@ with tab_analysis:
             fig_hr.add_trace(go.Scatter(
                 x=hourly["hour"], y=hourly["avg_rev"], name="Ср. выручка",
                 mode="lines+markers", fill="tozeroy",
-                line=dict(color="#7B2FF7", width=2),
+                line=dict(color="#16A34A", width=2),
                 fillcolor="rgba(123,47,247,0.08)",
                 marker=dict(size=4),
                 hovertemplate="Час %{x}:00 · %{y:$,.0f}<extra></extra>",
             ), secondary_y=False)
             fig_hr.add_trace(go.Bar(
                 x=hourly["hour"], y=hourly["n"], name="Кол-во",
-                marker_color="rgba(74,157,255,0.2)",
+                marker_color="rgba(107,114,128,0.2)",
                 hovertemplate="Час %{x}:00 · %{y} сделок<extra></extra>",
             ), secondary_y=True)
             fig_hr.update_layout(**PLOTLY_LAYOUT, height=280,
-                                  title_font=dict(size=14, color="#E8EAFF"))
+                                  title_font=dict(size=14, color="#111827"))
             fig_hr.update_layout(legend=dict(x=0, y=1))
             fig_hr.update_xaxes(tickmode="linear", tick0=0, dtick=3,
-                                 tickformat="%d:00", gridcolor="rgba(123,47,247,0.12)")
+                                 tickformat="%d:00", gridcolor="#E5E7EB")
             st.plotly_chart(fig_hr, use_container_width=True)
 
     # ── Weekday pattern ──
@@ -944,12 +944,12 @@ with tab_analysis:
             x=weekday_agg["day_ru"], y=weekday_agg["avg_rev"],
             marker=dict(
                 color=weekday_agg["avg_rev"],
-                colorscale=[[0, "#1E2050"], [1.0, "#7B2FF7"]],
+                colorscale=[[0, "#F0FDF4"], [1.0, "#16A34A"]],
             ),
             hovertemplate="%{x}: %{y:$,.0f} средняя<extra></extra>",
         ))
         fig_wd.update_layout(**PLOTLY_LAYOUT, height=220, title="Средняя выручка по дням",
-                              title_font=dict(size=14, color="#E8EAFF"))
+                              title_font=dict(size=14, color="#111827"))
         st.plotly_chart(fig_wd, use_container_width=True)
 
 # ══════════════════════════════════════════════
@@ -964,9 +964,9 @@ with tab_export:
     # ── CSV export ──
     with exp_c1:
         st.markdown("""
-        <div class="stape-card">
+        <div class="fin-card">
           <div style="font-size:15px;font-weight:600;margin-bottom:6px">📄 CSV</div>
-          <div style="font-size:12px;color:#9095C8">Агрегированные данные по текущему фильтру
+          <div style="font-size:12px;color:#4B5563">Агрегированные данные по текущему фильтру
           с симулированной выручкой и дельтой</div>
         </div>
         """, unsafe_allow_html=True)
@@ -981,9 +981,9 @@ with tab_export:
     # ── Excel export ──
     with exp_c2:
         st.markdown("""
-        <div class="stape-card">
+        <div class="fin-card">
           <div style="font-size:15px;font-weight:600;margin-bottom:6px">📊 Excel (полный отчёт)</div>
-          <div style="font-size:12px;color:#9095C8">4 листа: Сводка · По парам · По тирам · По месяцам</div>
+          <div style="font-size:12px;color:#4B5563">4 листа: Сводка · По парам · По тирам · По месяцам</div>
         </div>
         """, unsafe_allow_html=True)
 
