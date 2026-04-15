@@ -145,7 +145,7 @@ h1,h2,h3,h4,h5,h6 { color: #000000 !important; }
   border-bottom: 2px solid transparent !important;
   margin-bottom: -1px !important;
   border-radius: 0 !important;
-  color: var(--ink3) !important;
+  color: #000000 !important;
   font-size: 12px !important;
   font-weight: 500 !important;
   padding: 14px 22px !important;
@@ -206,7 +206,7 @@ h1,h2,h3,h4,h5,h6 { color: #000000 !important; }
   font-weight: 600 !important;
   letter-spacing: .08em !important;
   text-transform: uppercase !important;
-  color: var(--ink3) !important;
+  color: #000000 !important;
 }
 [data-testid="stMetric"] [data-testid="stMetricValue"] {
   font-size: 30px !important;
@@ -238,13 +238,13 @@ details {
   padding: 4px 14px !important;
   box-shadow: var(--shadow-sm) !important;
 }
-summary { color: var(--ink3) !important; font-size: 13px !important; font-weight: 500 !important; }
+summary { color: #000000 !important; font-size: 13px !important; font-weight: 500 !important; }
 
 /* ── Alerts ── */
 [data-testid="stInfo"] {
   background: var(--blue-bg) !important; border: 1px solid var(--blue-bdr) !important;
   border-left: 3px solid var(--blue) !important; border-radius: 8px !important;
-  color: var(--ink2) !important;
+  color: #000000 !important;
 }
 [data-testid="stSuccess"] {
   background: var(--green-bg) !important; border: 1px solid var(--green-bdr) !important;
@@ -286,7 +286,7 @@ summary { color: var(--ink3) !important; font-size: 13px !important; font-weight
   font-weight: 600;
   letter-spacing: .10em;
   text-transform: uppercase;
-  color: var(--ink3);
+  color: #000000;
   margin-bottom: 6px;
 }
 .fin-tag {
