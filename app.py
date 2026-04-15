@@ -407,7 +407,7 @@ def color_delta(val):
     if isinstance(val,(int,float)):
         if val>0.5:   return "color:#0DA8A2;font-weight:600"
         if val<-0.5:  return "color:#EF4A6B;font-weight:600"
-        return "color:#374D63"
+        return "color:#000000"
     return ""
 
 # ── SIDEBAR ──
@@ -486,7 +486,7 @@ with col_h1:
                  color:#000000;font-family:'Inter',sans-serif">
         FX Revenue Dashboard
       </h1>
-      <div style="font-size:13px;color:#374D63;margin-top:5px;font-family:'Inter',sans-serif">
+      <div style="font-size:13px;color:#000000;margin-top:5px;font-family:'Inter',sans-serif">
         {src_str}
       </div>
     </div>
@@ -505,7 +505,7 @@ if df.empty:
       <div style="font-size:18px;font-weight:600;color:#000000;margin-bottom:8px">
         Upload data to get started
       </div>
-      <div style="font-size:13px;color:#243344;max-width:480px;margin:0 auto;line-height:1.7">
+      <div style="font-size:13px;color:#000000;max-width:480px;margin:0 auto;line-height:1.7">
         Import a CSV or Excel file using the panel on the left.<br>
         The dashboard will automatically compute metrics, spread distribution,
         revenue dynamics and break-even analysis.
@@ -623,12 +623,12 @@ with tab_ov:
 with tab_calc:
     st.markdown("""
     <div class="dash-card-teal" style="margin-bottom:1rem">
-      <div style="font-size:12px;color:#243344;line-height:1.7">
+      <div style="font-size:12px;color:#000000;line-height:1.7">
         <b style="color:#000000;font-weight:600">How simulation works:</b>&ensp;
         <code style="background:#E6FAF9;color:#0DA8A2;padding:2px 8px;border-radius:5px;font-size:11px">
           rev_sim = rev_base × (sp_new / sp_real) × (1 + E × max(0, sp_old − sp_new))
         </code><br>
-        <span style="color:#374D63;font-size:11px">
+        <span style="color:#000000;font-size:11px">
           Uses the real weighted average spread (μ) from data.
           Pairs with custom spreads marked <span style="color:#F5A524">●</span>
         </span>
@@ -651,7 +651,7 @@ with tab_calc:
                 μ={mean_sp:.3f}%{"&nbsp;<span style='color:#F5A524'>● custom</span>" if has_cust else ""}
               </span>
             </div>
-            <div style="font-size:10px;color:#374D63;margin-bottom:5px">
+            <div style="font-size:10px;color:#000000;margin-bottom:5px">
               min {min_sp:.2f}% · max {max_sp:.2f}% · n={len(sub):,}
             </div>""", unsafe_allow_html=True)
 
@@ -666,7 +666,7 @@ with tab_calc:
             st.markdown(f"""
             <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:3px">
               <span style="color:{sc};font-weight:600">{new_sp:.2f}%{"↓" if new_sp<mean_sp else "↑" if new_sp>mean_sp else ""}</span>
-              <span style="color:#243344">{fmt_usd(sim_p)}</span>
+              <span style="color:#000000">{fmt_usd(sim_p)}</span>
               <span style="color:{dc};font-weight:600">{'+' if d_p>=0 else ''}{fmt_usd(d_p)}</span>
             </div><hr>""", unsafe_allow_html=True)
 
@@ -842,7 +842,7 @@ with tab_export:
         <div class="dash-card-teal">
           <div class="dash-label">CSV · Filtered dataset</div>
           <div style="font-size:13px;font-weight:500;color:#000000;margin-bottom:4px">Aggregated data</div>
-          <div style="font-size:12px;color:#243344">Current filter with simulated revenue and delta</div>
+          <div style="font-size:12px;color:#000000">Current filter with simulated revenue and delta</div>
         </div>""", unsafe_allow_html=True)
         agg_exp=agg_sim(filt,st.session_state.ov,elast,by=["pair","tier","source","month"])
         st.download_button("⬇ Download CSV",data=agg_exp.to_csv(index=False).encode("utf-8"),
@@ -853,7 +853,7 @@ with tab_export:
         <div class="dash-card-teal">
           <div class="dash-label">Excel · Full report</div>
           <div style="font-size:13px;font-weight:500;color:#000000;margin-bottom:4px">4 sheets</div>
-          <div style="font-size:12px;color:#243344">Summary · By pair · By tier · By month</div>
+          <div style="font-size:12px;color:#000000">Summary · By pair · By tier · By month</div>
         </div>""", unsafe_allow_html=True)
         xl_buf=io.BytesIO()
         with pd.ExcelWriter(xl_buf,engine="openpyxl") as writer:
