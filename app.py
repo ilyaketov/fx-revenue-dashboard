@@ -27,7 +27,7 @@ CSS = """
   /* Ink */
   --ink:       #1A2333;
   --ink2:      #2D3A4A;
-  --ink3:      #5A6A7E;
+  --ink3:      #3D4E62;
   --ink4:      #8B99AB;
   --ink5:      #C0CAD4;
 
@@ -145,13 +145,13 @@ h1,h2,h3,h4,h5,h6 { color: var(--ink) !important; }
   border-bottom: 2px solid transparent !important;
   margin-bottom: -1px !important;
   border-radius: 0 !important;
-  color: var(--ink4) !important;
+  color: var(--ink3) !important;
   font-size: 12px !important;
   font-weight: 500 !important;
   padding: 14px 22px !important;
   transition: color .15s !important;
 }
-.stTabs [data-baseweb="tab"]:hover { color: var(--ink2) !important; }
+.stTabs [data-baseweb="tab"]:hover { color: var(--ink) !important; }
 .stTabs [aria-selected="true"] {
   background: transparent !important;
   border-bottom: 2px solid var(--teal) !important;
@@ -206,7 +206,7 @@ h1,h2,h3,h4,h5,h6 { color: var(--ink) !important; }
   font-weight: 600 !important;
   letter-spacing: .08em !important;
   text-transform: uppercase !important;
-  color: var(--ink4) !important;
+  color: var(--ink3) !important;
 }
 [data-testid="stMetric"] [data-testid="stMetricValue"] {
   font-size: 30px !important;
@@ -286,7 +286,7 @@ summary { color: var(--ink3) !important; font-size: 13px !important; font-weight
   font-weight: 600;
   letter-spacing: .10em;
   text-transform: uppercase;
-  color: var(--ink4);
+  color: var(--ink3);
   margin-bottom: 6px;
 }
 .fin-tag {
