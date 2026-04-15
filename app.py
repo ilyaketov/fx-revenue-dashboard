@@ -25,11 +25,11 @@ CSS = """
   --bg3:       #F5F6FA;
 
   /* Ink */
-  --ink:       #1A2333;
-  --ink2:      #2D3A4A;
-  --ink3:      #3D4E62;
-  --ink4:      #8B99AB;
-  --ink5:      #C0CAD4;
+  --ink:       #000000;
+  --ink2:      #111111;
+  --ink3:      #222222;
+  --ink4:      #444444;
+  --ink5:      #6B7A8D;
 
   /* Teal accent — main positive color (like the +2.3% in the reference) */
   --teal:      #13C9C2;
@@ -77,7 +77,7 @@ CSS = """
 html, body, [class*="css"] {
   font-family: 'Inter', -apple-system, sans-serif !important;
   background: var(--bg) !important;
-  color: var(--ink) !important;
+  color: #000000 !important;
   -webkit-font-smoothing: antialiased !important;
 }
 .main .block-container {
@@ -86,7 +86,7 @@ html, body, [class*="css"] {
   background: var(--bg) !important;
 }
 .stApp { background: var(--bg) !important; }
-h1,h2,h3,h4,h5,h6 { color: var(--ink) !important; }
+h1,h2,h3,h4,h5,h6 { color: #000000 !important; }
 
 /* ── Sidebar ── */
 [data-testid="stSidebar"] {
@@ -151,7 +151,7 @@ h1,h2,h3,h4,h5,h6 { color: var(--ink) !important; }
   padding: 14px 22px !important;
   transition: color .15s !important;
 }
-.stTabs [data-baseweb="tab"]:hover { color: var(--ink) !important; }
+.stTabs [data-baseweb="tab"]:hover { color: #000000 !important; }
 .stTabs [aria-selected="true"] {
   background: transparent !important;
   border-bottom: 2px solid var(--teal) !important;
@@ -211,7 +211,7 @@ h1,h2,h3,h4,h5,h6 { color: var(--ink) !important; }
 [data-testid="stMetric"] [data-testid="stMetricValue"] {
   font-size: 30px !important;
   font-weight: 600 !important;
-  color: var(--ink) !important;
+  color: #000000 !important;
   letter-spacing: -.03em !important;
 }
 /* Delta — green when positive */
@@ -324,18 +324,18 @@ MONTHS_EN = {
 
 PLOTLY_LAYOUT = dict(
     paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF",
-    font=dict(family="'Inter', sans-serif", color="#5A6A7E", size=11),
+    font=dict(family="'Inter', sans-serif", color="#111111", size=11),
     margin=dict(l=8, r=8, t=44, b=8),
     xaxis=dict(gridcolor="#F0F2F7", gridwidth=1, zerolinecolor="#E4E8EF",
-               linecolor="#E4E8EF", linewidth=1, tickfont=dict(size=10, color="#8B99AB")),
+               linecolor="#E4E8EF", linewidth=1, tickfont=dict(size=10, color="#666666")),
     yaxis=dict(gridcolor="#F0F2F7", gridwidth=1, zerolinecolor="#E4E8EF",
-               linecolor="#E4E8EF", linewidth=1, tickfont=dict(size=10, color="#8B99AB")),
+               linecolor="#E4E8EF", linewidth=1, tickfont=dict(size=10, color="#666666")),
     legend=dict(bgcolor="rgba(255,255,255,0.95)", bordercolor="#E4E8EF", borderwidth=1,
-                font=dict(size=11, color="#2D3A4A"), orientation="h",
+                font=dict(size=11, color="#111111"), orientation="h",
                 yanchor="bottom", y=1.02, xanchor="left", x=0),
     hoverlabel=dict(bgcolor="#FFFFFF", bordercolor="#E4E8EF",
-                    font=dict(color="#1A2333", size=12, family="'Inter', sans-serif")),
-    title_font=dict(size=13, color="#1A2333", family="'Inter', sans-serif"),
+                    font=dict(color="#000000", size=12, family="'Inter', sans-serif")),
+    title_font=dict(size=13, color="#000000", family="'Inter', sans-serif"),
 )
 
 REQUIRED_COLS = {"from_currency","to_currency","from_amount","to_amount","spread","fx_revenue_usd","source"}
@@ -407,7 +407,7 @@ def color_delta(val):
     if isinstance(val,(int,float)):
         if val>0.5:   return "color:#0DA8A2;font-weight:600"
         if val<-0.5:  return "color:#EF4A6B;font-weight:600"
-        return "color:#8B99AB"
+        return "color:#374D63"
     return ""
 
 # ── SIDEBAR ──
@@ -483,10 +483,10 @@ with col_h1:
     st.markdown(f"""
     <div style="padding:4px 0 16px">
       <h1 style="font-size:24px;font-weight:600;letter-spacing:-.03em;margin:0;
-                 color:#1A2333;font-family:'Inter',sans-serif">
+                 color:#000000;font-family:'Inter',sans-serif">
         FX Revenue Dashboard
       </h1>
-      <div style="font-size:13px;color:#8B99AB;margin-top:5px;font-family:'Inter',sans-serif">
+      <div style="font-size:13px;color:#374D63;margin-top:5px;font-family:'Inter',sans-serif">
         {src_str}
       </div>
     </div>
@@ -502,10 +502,10 @@ if df.empty:
     st.markdown("""
     <div class="dash-card-teal" style="text-align:center;padding:72px 40px">
       <div style="font-size:40px;margin-bottom:18px;opacity:.18">◎</div>
-      <div style="font-size:18px;font-weight:600;color:#1A2333;margin-bottom:8px">
+      <div style="font-size:18px;font-weight:600;color:#000000;margin-bottom:8px">
         Upload data to get started
       </div>
-      <div style="font-size:13px;color:#5A6A7E;max-width:480px;margin:0 auto;line-height:1.7">
+      <div style="font-size:13px;color:#243344;max-width:480px;margin:0 auto;line-height:1.7">
         Import a CSV or Excel file using the panel on the left.<br>
         The dashboard will automatically compute metrics, spread distribution,
         revenue dynamics and break-even analysis.
@@ -599,9 +599,9 @@ with tab_ov:
             hovertemplate="%{x}: %{y:,} deals<extra></extra>"), secondary_y=True)
         fig_src.update_layout(**PLOTLY_LAYOUT, title="Sources — revenue / deal count", height=260)
         fig_src.update_yaxes(title_text="Revenue $",secondary_y=False,gridcolor="#F0F2F7",
-            title_font=dict(size=10,color="#8B99AB"),color="#5A6A7E")
+            title_font=dict(size=10,color="#666666"),color="#111111")
         fig_src.update_yaxes(title_text="Deals",secondary_y=True,gridcolor=None,
-            title_font=dict(size=10,color="#8B99AB"),color="#5A6A7E")
+            title_font=dict(size=10,color="#666666"),color="#111111")
         st.plotly_chart(fig_src, use_container_width=True)
 
     st.markdown("#### Breakdown by pair")
@@ -623,12 +623,12 @@ with tab_ov:
 with tab_calc:
     st.markdown("""
     <div class="dash-card-teal" style="margin-bottom:1rem">
-      <div style="font-size:12px;color:#5A6A7E;line-height:1.7">
-        <b style="color:#1A2333;font-weight:600">How simulation works:</b>&ensp;
+      <div style="font-size:12px;color:#243344;line-height:1.7">
+        <b style="color:#000000;font-weight:600">How simulation works:</b>&ensp;
         <code style="background:#E6FAF9;color:#0DA8A2;padding:2px 8px;border-radius:5px;font-size:11px">
           rev_sim = rev_base × (sp_new / sp_real) × (1 + E × max(0, sp_old − sp_new))
         </code><br>
-        <span style="color:#8B99AB;font-size:11px">
+        <span style="color:#374D63;font-size:11px">
           Uses the real weighted average spread (μ) from data.
           Pairs with custom spreads marked <span style="color:#F5A524">●</span>
         </span>
@@ -647,11 +647,11 @@ with tab_calc:
             st.markdown(f"""
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
               <span style="font-size:13px;font-weight:600;color:{PAIR_COLORS.get(pair,'#13C9C2')}">{pair}</span>
-              <span style="font-size:9px;color:#8B99AB">
+              <span style="font-size:9px;color:#444444">
                 μ={mean_sp:.3f}%{"&nbsp;<span style='color:#F5A524'>● custom</span>" if has_cust else ""}
               </span>
             </div>
-            <div style="font-size:10px;color:#8B99AB;margin-bottom:5px">
+            <div style="font-size:10px;color:#374D63;margin-bottom:5px">
               min {min_sp:.2f}% · max {max_sp:.2f}% · n={len(sub):,}
             </div>""", unsafe_allow_html=True)
 
@@ -666,7 +666,7 @@ with tab_calc:
             st.markdown(f"""
             <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:3px">
               <span style="color:{sc};font-weight:600">{new_sp:.2f}%{"↓" if new_sp<mean_sp else "↑" if new_sp>mean_sp else ""}</span>
-              <span style="color:#5A6A7E">{fmt_usd(sim_p)}</span>
+              <span style="color:#243344">{fmt_usd(sim_p)}</span>
               <span style="color:{dc};font-weight:600">{'+' if d_p>=0 else ''}{fmt_usd(d_p)}</span>
             </div><hr>""", unsafe_allow_html=True)
 
@@ -678,7 +678,7 @@ with tab_calc:
     <div class="dash-card" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;margin-top:.5rem">
       <div style="padding:16px 22px;border-right:1px solid #EEF0F5">
         <div class="dash-label">Base (actual)</div>
-        <div style="font-size:26px;font-weight:600;color:#2D3A4A;letter-spacing:-.03em">{fmt_usd(base_filt)}</div>
+        <div style="font-size:26px;font-weight:600;color:#000000;letter-spacing:-.03em">{fmt_usd(base_filt)}</div>
       </div>
       <div style="padding:16px 22px;border-right:1px solid #EEF0F5;border-top:3px solid #13C9C2">
         <div class="dash-label">Simulation</div>
@@ -749,11 +749,11 @@ with tab_analysis:
         hovertemplate="<b>%{y}</b><br>%{x}: %{z:$,.0f}<extra></extra>",
         text=[[fmt_usd(v) if v>0 else "—" for v in row] for row in hm_data],
         texttemplate="%{text}",
-        textfont=dict(size=10,color="#1A2333",family="'Inter',sans-serif"),
-        colorbar=dict(tickfont=dict(size=10,color="#5A6A7E"),outlinewidth=0,thickness=12,
-            title=dict(text="Revenue $",font=dict(size=10,color="#8B99AB")))))
+        textfont=dict(size=10,color="#000000",family="'Inter',sans-serif"),
+        colorbar=dict(tickfont=dict(size=10,color="#111111"),outlinewidth=0,thickness=12,
+            title=dict(text="Revenue $",font=dict(size=10,color="#666666")))))
     fig_hm.update_layout(**PLOTLY_LAYOUT, height=300)
-    fig_hm.update_yaxes(gridcolor=None, tickfont=dict(size=11,color="#2D3A4A"))
+    fig_hm.update_yaxes(gridcolor=None, tickfont=dict(size=11,color="#111111"))
     st.plotly_chart(fig_hm, use_container_width=True)
 
     col_a1,col_a2=st.columns(2)
@@ -774,8 +774,8 @@ with tab_analysis:
                 labels={"pct_n":"% of transactions","pair":""},
                 hover_data={"n":True,"rev":":.0f"},height=280)
             fig_sd.update_layout(**PLOTLY_LAYOUT,
-                coloraxis_colorbar=dict(title=dict(text="Spread %",font=dict(size=10,color="#8B99AB")),
-                    tickfont=dict(size=10,color="#5A6A7E"),outlinewidth=0,thickness=12))
+                coloraxis_colorbar=dict(title=dict(text="Spread %",font=dict(size=10,color="#666666")),
+                    tickfont=dict(size=10,color="#111111"),outlinewidth=0,thickness=12))
             st.plotly_chart(fig_sd, use_container_width=True)
 
             with st.expander("Spread distribution detail"):
@@ -783,7 +783,7 @@ with tab_analysis:
                     aggfunc="sum",fill_value=0)
                 pivot.columns=[f"{c:.1f}%" for c in pivot.columns]
                 def color_pct(val):
-                    if not isinstance(val,(int,float)) or val==0: return "color:#C0CAD4"
+                    if not isinstance(val,(int,float)) or val==0: return "color:#888888"
                     t=min(val/100,1.0)
                     r=int(192-(192-10)*t); g=int(234-(234-168)*t); b=int(232-(232-168)*t)
                     return (f"color:rgb({r},{g},{b});font-weight:{'600' if val>50 else '400'}")
@@ -809,9 +809,9 @@ with tab_analysis:
             fig_hr.update_layout(legend=dict(x=0,y=1))
             fig_hr.update_xaxes(tickmode="linear",tick0=0,dtick=3,gridcolor="#F0F2F7")
             fig_hr.update_yaxes(title_text="Avg revenue $",secondary_y=False,
-                title_font=dict(size=10,color="#8B99AB"),color="#5A6A7E")
+                title_font=dict(size=10,color="#666666"),color="#111111")
             fig_hr.update_yaxes(title_text="Deal count",secondary_y=True,
-                title_font=dict(size=10,color="#8B99AB"),color="#5A6A7E")
+                title_font=dict(size=10,color="#666666"),color="#111111")
             st.plotly_chart(fig_hr, use_container_width=True)
 
     if "weekday" in filt.columns and filt["weekday"].nunique()>1:
@@ -841,8 +841,8 @@ with tab_export:
         st.markdown("""
         <div class="dash-card-teal">
           <div class="dash-label">CSV · Filtered dataset</div>
-          <div style="font-size:13px;font-weight:500;color:#1A2333;margin-bottom:4px">Aggregated data</div>
-          <div style="font-size:12px;color:#5A6A7E">Current filter with simulated revenue and delta</div>
+          <div style="font-size:13px;font-weight:500;color:#000000;margin-bottom:4px">Aggregated data</div>
+          <div style="font-size:12px;color:#243344">Current filter with simulated revenue and delta</div>
         </div>""", unsafe_allow_html=True)
         agg_exp=agg_sim(filt,st.session_state.ov,elast,by=["pair","tier","source","month"])
         st.download_button("⬇ Download CSV",data=agg_exp.to_csv(index=False).encode("utf-8"),
@@ -852,8 +852,8 @@ with tab_export:
         st.markdown("""
         <div class="dash-card-teal">
           <div class="dash-label">Excel · Full report</div>
-          <div style="font-size:13px;font-weight:500;color:#1A2333;margin-bottom:4px">4 sheets</div>
-          <div style="font-size:12px;color:#5A6A7E">Summary · By pair · By tier · By month</div>
+          <div style="font-size:13px;font-weight:500;color:#000000;margin-bottom:4px">4 sheets</div>
+          <div style="font-size:12px;color:#243344">Summary · By pair · By tier · By month</div>
         </div>""", unsafe_allow_html=True)
         xl_buf=io.BytesIO()
         with pd.ExcelWriter(xl_buf,engine="openpyxl") as writer:
